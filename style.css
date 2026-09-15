@@ -1,0 +1,388 @@
+/* =========================
+   VMC NEXUS LOGIN PAGE
+   ========================= */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+
+/* =========================
+   BODY
+   ========================= */
+
+body {
+    min-height: 100vh;
+
+    background: linear-gradient(
+        135deg,
+        #071d38,
+        #075985,
+        #0284c7
+    );
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+/* =========================
+   LOGIN CONTAINER
+   ========================= */
+
+.login-container {
+    width: 900px;
+    max-width: 95%;
+    min-height: 520px;
+
+    background: #ffffff;
+
+    border-radius: 20px;
+
+    overflow: hidden;
+
+    display: flex;
+
+    box-shadow:
+        0 20px 50px rgba(0, 0, 0, 0.25);
+}
+
+
+/* =========================
+   LEFT SIDE
+   ========================= */
+
+.left {
+    width: 50%;
+
+    background: linear-gradient(
+        160deg,
+        #08264a,
+        #075985
+    );
+
+    color: white;
+
+    padding: 55px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+
+/* LOGO */
+
+.logo {
+    font-size: 40px;
+
+    font-weight: bold;
+
+    margin-bottom: 20px;
+}
+
+.logo span {
+    color: #38bdf8;
+}
+
+
+/* LEFT TITLE */
+
+.left h1 {
+    font-size: 32px;
+
+    line-height: 1.2;
+
+    margin-bottom: 15px;
+}
+
+
+/* LEFT DESCRIPTION */
+
+.left p {
+    color: #dbeafe;
+
+    line-height: 1.7;
+
+    font-size: 15px;
+}
+
+
+/* FEATURES */
+
+.features {
+    margin-top: 30px;
+}
+
+.features p {
+    margin: 12px 0;
+
+    color: #ffffff;
+}
+
+
+/* =========================
+   RIGHT SIDE
+   ========================= */
+
+.right {
+    width: 50%;
+
+    padding: 55px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    justify-content: center;
+}
+
+
+/* LOGIN TITLE */
+
+.right h2 {
+    font-size: 30px;
+
+    color: #0f172a;
+
+    margin-bottom: 8px;
+}
+
+
+/* SUBTITLE */
+
+.subtitle {
+    color: #64748b;
+
+    margin-bottom: 28px;
+}
+
+
+/* =========================
+   FORM
+   ========================= */
+
+.input-group {
+    margin-bottom: 20px;
+}
+
+
+/* LABEL */
+
+label {
+    display: block;
+
+    font-weight: bold;
+
+    color: #334155;
+
+    margin-bottom: 7px;
+}
+
+
+/* INPUT */
+
+input {
+    width: 100%;
+
+    padding: 14px;
+
+    border: 1px solid #cbd5e1;
+
+    border-radius: 8px;
+
+    font-size: 15px;
+
+    outline: none;
+
+    transition: 0.2s;
+}
+
+
+/* INPUT FOCUS */
+
+input:focus {
+    border-color: #0284c7;
+
+    box-shadow:
+        0 0 0 3px
+        rgba(2, 132, 199, 0.12);
+}
+
+
+/* =========================
+   PASSWORD
+   ========================= */
+
+.password-box {
+    position: relative;
+}
+
+.password-box input {
+    padding-right: 70px;
+}
+
+
+/* SHOW / HIDE */
+
+.show {
+    position: absolute;
+
+    right: 12px;
+
+    top: 50%;
+
+    transform: translateY(-50%);
+
+    color: #0284c7;
+
+    cursor: pointer;
+
+    font-size: 13px;
+
+    font-weight: bold;
+}
+
+.show:hover {
+    color: #0369a1;
+}
+
+
+/* =========================
+   LOGIN BUTTON
+   ========================= */
+
+.login-button {
+    width: 100%;
+
+    padding: 14px;
+
+    border: none;
+
+    border-radius: 8px;
+
+    background: #0284c7;
+
+    color: #ffffff;
+
+    font-size: 16px;
+
+    font-weight: bold;
+
+    cursor: pointer;
+
+    margin-top: 5px;
+
+    transition: 0.2s;
+}
+
+
+/* BUTTON HOVER */
+
+.login-button:hover {
+    background: #0369a1;
+
+    transform: translateY(-1px);
+}
+
+
+/* BUTTON ACTIVE */
+
+.login-button:active {
+    transform: translateY(0);
+}
+
+
+/* =========================
+   REGISTER
+   ========================= */
+
+.register {
+    text-align: center;
+
+    margin-top: 22px;
+
+    color: #64748b;
+
+    font-size: 14px;
+}
+
+
+.register a {
+    color: #0284c7;
+
+    font-weight: bold;
+
+    text-decoration: none;
+}
+
+
+.register a:hover {
+    text-decoration: underline;
+}
+
+
+/* =========================
+   FOOTER
+   ========================= */
+
+.footer {
+    text-align: center;
+
+    margin-top: 25px;
+
+    color: #94a3b8;
+
+    font-size: 12px;
+}
+
+
+/* =========================
+   RESPONSIVE / MOBILE
+   ========================= */
+
+@media (max-width: 700px) {
+
+    .login-container {
+        flex-direction: column;
+
+        min-height: auto;
+    }
+
+
+    .left {
+        width: 100%;
+
+        padding: 35px;
+
+        text-align: center;
+    }
+
+
+    .right {
+        width: 100%;
+
+        padding: 35px;
+    }
+
+
+    .features {
+        display: none;
+    }
+
+
+    .left h1 {
+        font-size: 25px;
+    }
+
+
+    .logo {
+        font-size: 32px;
+    }
+
+}
+```
