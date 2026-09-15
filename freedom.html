@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Freedom Wall - VMC Nexus</title>
+
+    <link rel="stylesheet" href="css/style.css">
+
+</head>
+
+<body>
+
+<header class="navbar">
+
+    <div class="logo">VMC <span>NEXUS</span></div>
+
+    <nav>
+
+        <a href="dashboard.html">Dashboard</a>
+        <a href="announcements.html">Announcements</a>
+        <a href="concerns.html">Concerns</a>
+        <a href="scholarship.html">Scholarship</a>
+        <a href="library.html">Library</a>
+
+        <a href="freedom-wall.html" class="active">
+            Freedom Wall
+        </a>
+
+    </nav>
+
+</header>
+
+<main class="page-container">
+
+    <div class="page-header">
+
+        <h1>💬 Freedom Wall</h1>
+
+        <p>
+            Share your thoughts, messages, and ideas.
+        </p>
+
+    </div>
+
+    <div class="form-card">
+
+        <form onsubmit="postMessage(event)">
+
+            <label>Your Name</label>
+
+            <input
+                type="text"
+                id="wallName"
+                placeholder="Enter your name"
+                required
+            >
+
+            <label>Your Message</label>
+
+            <textarea
+                id="wallMessage"
+                rows="5"
+                placeholder="Write your message..."
+                required>
+            </textarea>
+
+            <button type="submit" class="main-btn">
+                Post Message
+            </button>
+
+        </form>
+
+    </div>
+
+    <div class="wall-container">
+
+        <h2>Student Messages</h2>
+
+        <div id="wallPosts"></div>
+
+    </div>
+
+</main>
+
+<script src="js/script.js"></script>
+
+</body>
+</html>
+```
