@@ -28,10 +28,10 @@ body {
     z-index: 1000;
 }
 
-.logo {
-    font-size: 25px;
-    font-weight: bold;
-    color: white;
+.logo-image img {
+    width: 150px;
+    height: auto;
+    display: block;
 }
 
 .logo span {
