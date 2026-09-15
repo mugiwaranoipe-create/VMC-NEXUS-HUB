@@ -1,254 +1,79 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>VMC Nexus | Login</title>
-
-    <style>
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: Arial, sans-serif;
-        }
-
-        body {
-            min-height: 100vh;
-            background: linear-gradient(135deg, #071d38, #075985, #0284c7);
-
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        /* MAIN CONTAINER */
-
-        .login-container {
-            width: 900px;
-            max-width: 95%;
-            min-height: 520px;
-
-            background: white;
-
-            border-radius: 20px;
-
-            overflow: hidden;
-
-            display: flex;
-
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.25);
-        }
-
-        /* LEFT SIDE */
-
-        .left {
-            width: 50%;
-
-            background: linear-gradient(160deg, #08264a, #075985);
-
-            color: white;
-
-            padding: 55px;
-
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
-
-        .logo {
-            font-size: 40px;
-            font-weight: bold;
-
-            margin-bottom: 20px;
-        }
-
-        .logo span {
-            color: #38bdf8;
-        }
-
-        .left h1 {
-            font-size: 32px;
-            margin-bottom: 15px;
-        }
-
-        .left p {
-            color: #dbeafe;
-            line-height: 1.7;
-            font-size: 15px;
-        }
-
-        .features {
-            margin-top: 30px;
-        }
-
-        .features p {
-            margin: 12px 0;
-            color: white;
-        }
-
-        /* RIGHT SIDE */
-
-        .right {
-            width: 50%;
-
-            padding: 55px;
-
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
-
-        .right h2 {
-            font-size: 30px;
-            color: #0f172a;
-
-            margin-bottom: 8px;
-        }
-
-        .subtitle {
-            color: #64748b;
-            margin-bottom: 28px;
-        }
-
-        /* FORM */
-
-        label {
-            display: block;
-
-            font-weight: bold;
-
-            color: #334155;
-
-            margin-bottom: 7px;
-        }
-
-        .input-group {
-            margin-bottom: 20px;
-        }
-
-        input {
-            width: 100%;
-
-            padding: 14px;
-
-            border: 1px solid #cbd5e1;
-
-            border-radius: 8px;
-
-            font-size: 15px;
-
-            outline: none;
-        }
-
-        input:focus {
-            border-color: #0284c7;
-
-            box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.12);
-        }
-
-        /* PASSWORD */
-
-        .password-box {
-            position: relative;
-        }
-
-        .password-box input {
-            padding-right: 70px;
-        }
-
-        .show {
-            position: absolute;
-
-            right: 12px;
-            top: 50%;
-
-            transform: translateY(-50%);
-
-            color: #0284c7;
-
-            cursor: pointer;
-
-            font-size: 13px;
-
-            font-weight: bold;
-        }
-
-        /* BUTTON */
-
-        .login-button {
-            width: 100%;
-
-            padding: 14px;
-
-            border: none;
-
-            border-radius: 8px;
-
-            background: #0284c7;
-
-            color: white;
-
-            font-size: 16px;
-
-            font-weight: bold;
-
-            cursor: pointer;
-
-            margin-top: 5px;
-        }
-
-        .login-button:hover {
-            background: #0369a1;
-        }
-
-        /* REGISTER */
-
-        .register {
-            text-align: center;
-
-            margin-top: 22px;
-
-            color: #64748b;
-
-            font-size: 14px;
-        }
-
-        .register a {
-            color: #0284c7;
-
-            font-weight: bold;
-
-            text-decoration: none;
-        }
-
-        .register a:hover {
-            text-decoration: underline;
-        }
-
-        /* FOOTER */
-
-        .footer {
-            text-align: center;
-
-            margin-top: 25px;
-
-            color: #94a3b8;
-
-            font-size: 12px;
-        }
-
-        /* MOBILE */
-
-        @media (max-width: 700px) {
-
-            .login-container {
-                flex-direction: column;
-            }
-
-            .left {
-                wi
+    <title>VMC Nexus</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+<header class="navbar">
+    <div class="logo">VMC <span>NEXUS</span></div>
+
+    <nav>
+        <a href="index.html" class="active">Home</a>
+        <a href="announcements.html">Announcements</a>
+        <a href="scholarship.html">Scholarship</a>
+        <a href="library.html">Library</a>
+        <a href="freedom-wall.html">Freedom Wall</a>
+        <a href="login.html" class="login-btn">Login</a>
+    </nav>
+</header>
+
+<section class="hero">
+    <div class="hero-content">
+        <p class="small-title">WELCOME TO</p>
+
+        <h1>VMC <span>NEXUS</span></h1>
+
+        <h2>Integrated Student Services System</h2>
+
+        <p>
+            A simple web-based platform designed to connect students
+            with school announcements, concerns, scholarships, library
+            services, and student activities.
+        </p>
+
+        <a href="login.html" class="main-btn">Get Started</a>
+    </div>
+</section>
+
+<section class="features">
+
+    <div class="feature-card">
+        <div class="icon">📢</div>
+        <h3>Announcements</h3>
+        <p>Stay updated with important school announcements.</p>
+    </div>
+
+    <div class="feature-card">
+        <div class="icon">📝</div>
+        <h3>School Concerns</h3>
+        <p>Submit and monitor your school-related concerns.</p>
+    </div>
+
+    <div class="feature-card">
+        <div class="icon">🎓</div>
+        <h3>Scholarships</h3>
+        <p>Find scholarship opportunities and information.</p>
+    </div>
+
+    <div class="feature-card">
+        <div class="icon">📚</div>
+        <h3>Library</h3>
+        <p>Search and organize available library resources.</p>
+    </div>
+
+</section>
+
+<footer>
+    <p>© 2026 VMC Nexus | Student Services System</p>
+</footer>
+
+<script src="js/script.js"></script>
+
+</body>
+</html>
 ```
