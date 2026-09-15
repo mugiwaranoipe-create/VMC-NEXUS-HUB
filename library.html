@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Library - VMC Nexus</title>
+
+    <link rel="stylesheet" href="css/style.css">
+
+</head>
+
+<body>
+
+<header class="navbar">
+
+    <div class="logo">VMC <span>NEXUS</span></div>
+
+    <nav>
+
+        <a href="dashboard.html">Dashboard</a>
+        <a href="announcements.html">Announcements</a>
+        <a href="concerns.html">Concerns</a>
+        <a href="scholarship.html">Scholarship</a>
+
+        <a href="library.html" class="active">
+            Library
+        </a>
+
+        <a href="freedom-wall.html">
+            Freedom Wall
+        </a>
+
+    </nav>
+
+</header>
+
+<main class="page-container">
+
+    <div class="page-header">
+
+        <h1>📚 VMC Library</h1>
+
+        <p>
+            Search for available books and library resources.
+        </p>
+
+    </div>
+
+    <div class="search-box">
+
+        <input
+            type="text"
+            id="bookSearch"
+            placeholder="Search book title..."
+            onkeyup="searchBooks()"
+        >
+
+    </div>
+
+    <div class="book-grid" id="bookList">
+
+        <div class="book-card">
+
+            <h3>Introduction to Information Systems</h3>
+
+            <p>Category: Information Technology</p>
+
+            <strong>Location: Shelf A1</strong>
+
+        </div>
+
+        <div class="book-card">
+
+            <h3>Web Development Basics</h3>
+
+            <p>Category: Programming</p>
+
+            <strong>Location: Shelf A2</strong>
+
+        </div>
+
+        <div class="book-card">
+
+            <h3>Database Management</h3>
+
+            <p>Category: Information Systems</p>
+
+            <strong>Location: Shelf B1</strong>
+
+        </div>
+
+        <div class="book-card">
+
+            <h3>Computer Programming</h3>
+
+            <p>Category: Programming</p>
+
+            <strong>Location: Shelf B2</strong>
+
+        </div>
+
+    </div>
+
+</main>
+
+<script src="js/script.js"></script>
+
+</body>
+</html>
+```
