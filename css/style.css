@@ -28,6 +28,12 @@ body {
     z-index: 1000;
 }
 
+.home-logo {
+    width: 220px;
+    height: auto;
+    margin-bottom: 20px;
+}
+
 .logo-image img {
     width: 150px;
     height: auto;
