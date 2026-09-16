@@ -3,18 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <title>School Concerns - VMC Nexus</title>
-
     <link rel="stylesheet" href="css/style.css">
 </head>
-
 <body>
 
 <header class="navbar">
-
-    <div class="logo">VMC <span>NEXUS</span></div>
-
+    <a href="index.html" class="navbar-logo">
+        <img src="images/Logo1.png" alt="VMC Nexus Logo">
+    </a>
     <nav>
         <a href="dashboard.html">Dashboard</a>
         <a href="announcements.html">Announcements</a>
@@ -23,85 +20,46 @@
         <a href="library.html">Library</a>
         <a href="freedom-wall.html">Freedom Wall</a>
     </nav>
-
 </header>
 
 <main class="page-container">
-
     <div class="page-header">
         <h1>📝 School Concern Management</h1>
-
-        <p>
-            Submit a school-related concern or request.
-        </p>
+        <p>Submit a school-related concern or request.</p>
     </div>
 
     <div class="form-card">
-
         <form onsubmit="submitConcern(event)">
-
             <label>Student Name</label>
-
-            <input
-                type="text"
-                id="studentName"
-                placeholder="Enter your name"
-                required
-            >
+            <input type="text" id="studentName" placeholder="Enter your name" required>
 
             <label>Category</label>
-
             <select id="category" required>
-
                 <option value="">Select Category</option>
-
                 <option>Academic</option>
                 <option>Library</option>
                 <option>Facilities</option>
                 <option>Student Services</option>
                 <option>Teacher Concern</option>
                 <option>Other</option>
-
             </select>
 
             <label>Subject</label>
-
-            <input
-                type="text"
-                id="concernSubject"
-                placeholder="Concern subject"
-                required
-            >
+            <input type="text" id="concernSubject" placeholder="Concern subject" required>
 
             <label>Message</label>
+            <textarea id="concernMessage" rows="6" placeholder="Explain your concern..." required></textarea>
 
-            <textarea
-                id="concernMessage"
-                rows="6"
-                placeholder="Explain your concern..."
-                required>
-            </textarea>
-
-            <button type="submit" class="main-btn">
-                Submit Concern
-            </button>
-
+            <button type="submit" class="main-btn">Submit Concern</button>
         </form>
-
     </div>
 
     <div class="form-card">
-
         <h2>Submitted Concerns</h2>
-
         <div id="concernList"></div>
-
     </div>
-
 </main>
 
 <script src="js/script.js"></script>
-
 </body>
 </html>
-```
