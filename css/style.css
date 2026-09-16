@@ -178,17 +178,33 @@ body {
     gap: 25px;
 }
 
+/* FEATURES */
+
+.features {
+    max-width: 1200px;
+    margin: 60px auto;
+    padding: 0 25px;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 25px;
+}
+
 .feature-card {
     background: white;
-
     padding: 30px;
-
     border-radius: 12px;
-
     text-align: center;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+    
+    /* ADD THESE LINES */
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
 
-    box-shadow:
-        0 5px 20px rgba(0,0,0,0.08);
+/* ADD THIS NEW HOVER RULE */
+.feature-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 25px rgba(0, 0, 0, 0.15);
 }
 
 .icon {
