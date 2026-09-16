@@ -34,10 +34,22 @@ body {
     margin-bottom: 20px;
 }
 
-.logo-image img {
-    width: 150px;
+.navbar-logo {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+}
+
+.navbar-logo img {
+    width: 140px;
     height: auto;
     display: block;
+}
+
+.home-logo {
+    width: 220px;
+    height: auto;
+    margin-bottom: 20px;
 }
 
 .logo span {
