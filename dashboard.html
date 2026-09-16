@@ -3,93 +3,74 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>Dashboard - VMC Nexus</title>
-
+    <title>VMC Nexus</title>
     <link rel="stylesheet" href="css/style.css">
 </head>
 
 <body>
 
 <header class="navbar">
-
-    <div class="logo">
-        VMC <span>NEXUS</span>
-    </div>
+    <a href="index.html" class="navbar-logo">
+        <img src="images/Logo1.png" alt="VMC Nexus Logo">
+    </a>
 
     <nav>
-        <a href="dashboard.html" class="active">Dashboard</a>
+        <a href="index.html" class="active">Home</a>
         <a href="announcements.html">Announcements</a>
-        <a href="concerns.html">Concerns</a>
         <a href="scholarship.html">Scholarship</a>
         <a href="library.html">Library</a>
         <a href="freedom-wall.html">Freedom Wall</a>
-        <button onclick="logout()" class="logout-btn">Logout</button>
+        <a href="login.html" class="login-btn">Login</a>
     </nav>
-
 </header>
 
-<main class="dashboard">
+<section class="hero">
+   <div class="hero-content">
+        <img src="images/Logo1.png" alt="VMC Nexus Logo" class="home-logo">
+        <p class="small-title">WELCOME TO</p>
 
-    <div class="welcome-card">
+        <h1>VMC <span>NEXUS</span></h1>
 
-        <p>WELCOME TO</p>
-
-        <h1>VMC NEXUS</h1>
-
-        <h3>Student Dashboard</h3>
+        <h2>Integrated Student Services System</h2>
 
         <p>
-            Access school information and student services
-            in one convenient place.
+            A simple web-based platform designed to connect students
+            with school announcements, concerns, scholarships, library
+            services, and student activities.
         </p>
 
+        <a href="login.html" class="main-btn">Get Started</a>
     </div>
+</section>
 
-    <h2 class="section-title">Student Services</h2>
-
-    <div class="service-grid">
-
-        <a href="announcements.html" class="service-card">
-            <span>📢</span>
-            <h3>Announcements</h3>
-            <p>View school announcements.</p>
-        </a>
-
-        <a href="concerns.html" class="service-card">
-            <span>📝</span>
-            <h3>School Concerns</h3>
-            <p>Submit your concerns.</p>
-        </a>
-
-        <a href="scholarship.html" class="service-card">
-            <span>🎓</span>
-            <h3>Scholarships</h3>
-            <p>Find scholarship opportunities.</p>
-        </a>
-
-        <a href="library.html" class="service-card">
-            <span>📚</span>
-            <h3>Library</h3>
-            <p>Search library resources.</p>
-        </a>
-
-        <a href="freedom-wall.html" class="service-card">
-            <span>💬</span>
-            <h3>Freedom Wall</h3>
-            <p>Share your thoughts.</p>
-        </a>
-
+<section class="features">
+    <div class="feature-card">
+        <div class="icon">📢</div>
+        <h3>Announcements</h3>
+        <p>Stay updated with important school announcements.</p>
     </div>
-
-</main>
+    <div class="feature-card">
+        <div class="icon">📝</div>
+        <h3>School Concerns</h3>
+        <p>Submit and monitor your school-related concerns.</p>
+    </div>
+    <div class="feature-card">
+        <div class="icon">🎓</div>
+        <h3>Scholarships</h3>
+        <p>Find scholarship opportunities and information.</p>
+    </div>
+    <div class="feature-card">
+        <div class="icon">📚</div>
+        <h3>Library</h3>
+        <p>Search and organize available library resources.</p>
+    </div>
+</section>
 
 <footer>
-    <p>© 2026 VMC Nexus</p>
+    <p>© 2026 VMC Nexus | Student Services System</p>
 </footer>
 
 <script src="js/script.js"></script>
 
 </body>
 </html>
-```
