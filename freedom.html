@@ -9,7 +9,9 @@
 <body>
 
 <header class="navbar">
-    <a href="index.html" class="navbar-logo"><img src="./image/navi-barlogo1.jpg" alt="VMC Nexus Logo"></a>
+    <a href="index.html" class="navbar-logo">
+        <img src="./image/navi-barlogo1.jpg" alt="VMC Nexus Navbar Logo">
+    </a>
     <nav>
         <a href="index.html">Home</a>
         <a href="announcement.html">Announcements</a>
@@ -21,28 +23,34 @@
     </nav>
 </header>
 
-<div class="page-container">
+<main class="page-container">
     <div class="page-header">
-        <h1>Student Freedom Wall</h1>
-        <p>Share your thoughts, messages, and reflections with fellow students.</p>
+        <h1>💬 Freedom Wall</h1>
+        <p>Share your thoughts, messages, and ideas.</p>
     </div>
 
     <div class="form-card">
         <form onsubmit="return postMessage(event)">
-            <label for="wallName">Your Name / Alias</label>
-            <input type="text" id="wallName" placeholder="Enter name or stay anonymous" required>
+            <label>Your Name</label>
+            <input type="text" id="wallName" placeholder="Enter your name" required>
 
-            <label for="wallMessage">Your Message</label>
-            <textarea id="wallMessage" rows="4" placeholder="Write something positive..." required></textarea>
+            <label>Your Message</label>
+            <textarea id="wallMessage" rows="5" placeholder="Write your message..." required></textarea>
 
-            <button type="submit" class="main-btn">POST MESSAGE</button>
+            <button type="submit" class="main-btn">Post Message</button>
         </form>
     </div>
 
-    <div id="wallPosts" style="margin-top: 30px;"></div>
-</div>
+    <div class="wall-container">
+        <h2>Student Messages</h2>
+        <div id="wallPosts"></div>
+    </div>
+</main>
 
-<footer><p>© 2026 VMC Nexus | Student Services System</p></footer>
+<footer>
+    <p>© 2026 VMC Nexus | Student Services System</p>
+</footer>
+
 <script src="js/script.js"></script>
 </body>
 </html>
