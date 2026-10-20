@@ -86,94 +86,132 @@ body {
     background-color: #dc2626;
 }
 
-/* HERO SECTION */
-.hero {
-    padding: 80px 20px 60px;
+/* PAGE CONTAINER & HEADERS (SUBPAGES) */
+.page-container {
+    max-width: 1000px;
+    margin: 40px auto;
+    padding: 0 20px;
+    flex: 1;
+    width: 100%;
+}
+
+.page-header {
     text-align: center;
-    background: radial-gradient(circle at center, #0a192f 0%, #030914 100%);
+    margin-bottom: 40px;
 }
 
-.hero h1 {
-    font-size: 48px;
-    font-weight: 800;
-    letter-spacing: 2px;
-    margin-bottom: 5px;
+.page-header h1 {
+    font-size: 32px;
+    color: #ffffff;
+    margin-bottom: 8px;
 }
 
-.hero h1 span {
-    color: #4da3ff;
-}
-
-.hero h2 {
-    font-size: 20px;
-    color: #94a3b8;
-    font-weight: 400;
-    margin-bottom: 20px;
-}
-
-.hero p {
-    max-width: 650px;
-    margin: 0 auto;
+.page-header p {
     color: #64748b;
     font-size: 15px;
 }
 
-.small-title {
-    color: #4da3ff;
-    font-weight: 700;
-    letter-spacing: 2px;
-    margin-bottom: 10px;
-}
-
-/* FEATURE CARDS */
-.features {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: 25px;
-    max-width: 1100px;
-    margin: 40px auto 60px;
-    padding: 0 20px;
-}
-
-.feature-card {
+/* CARDS & FORMS */
+.form-card, .announcement-card, .service-card, .book-card, .wall-post {
     background: #081120;
     border: 1px solid rgba(255, 255, 255, 0.05);
-    border-radius: 12px;
-    padding: 30px 20px;
-    text-align: center;
-    transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+    border-radius: 10px;
+    padding: 25px;
+    margin-bottom: 25px;
 }
 
-.feature-card:hover {
-    transform: translateY(-5px);
-    border-color: rgba(77, 163, 255, 0.3);
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
-}
-
-.feature-card .icon {
-    font-size: 36px;
-    margin-bottom: 15px;
-}
-
-.feature-card h3 {
-    color: #e2e8f0;
-    font-size: 18px;
+.announcement-card h2, .service-card h3, .book-card h3 {
+    color: #4da3ff;
     margin-bottom: 10px;
 }
 
-.feature-card p {
+.announcement-card small, .wall-post small {
     color: #64748b;
-    font-size: 13px;
+    display: block;
+    margin-top: 10px;
 }
 
-/* LOGIN & REGISTER PAGES (FIXED UI) */
-.login-page {
+.form-card label {
+    display: block;
+    font-size: 14px;
+    color: #94a3b8;
+    margin-bottom: 8px;
+    margin-top: 15px;
+}
+
+.form-card input,
+.form-card select,
+.form-card textarea,
+.search-box input {
+    width: 100%;
+    padding: 12px 15px;
+    background: #030914;
+    border: 1px solid #1e293b;
+    border-radius: 6px;
+    color: #ffffff;
+    font-size: 14px;
+    outline: none;
+    transition: border-color 0.3s ease;
+}
+
+.form-card input:focus,
+.form-card select:focus,
+.form-card textarea:focus,
+.search-box input:focus {
+    border-color: #2563eb;
+}
+
+.search-box {
+    margin-bottom: 30px;
+}
+
+.main-btn {
+    background-color: #2563eb;
+    color: #ffffff;
+    border: none;
+    padding: 12px 25px;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 20px;
+    width: 100%;
+    transition: background-color 0.3s ease;
+}
+
+.main-btn:hover {
+    background-color: #1d4ed8;
+}
+
+/* GRID LAYOUTS */
+.service-grid, .book-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+}
+
+/* FREEDOM WALL POSTS */
+.wall-post {
+    border-left: 4px solid #2563eb;
+}
+
+.wall-post h3 {
+    color: #e2e8f0;
+    margin-bottom: 8px;
+}
+
+.wall-post p {
+    color: #94a3b8;
+}
+
+/* LOGIN & REGISTER PAGES */
+body.login-page {
     display: flex;
     align-items: center;
     justify-content: center;
     min-height: 100vh;
     background: #030914;
     padding: 20px;
+    margin: 0;
 }
 
 .login-container {
@@ -194,18 +232,16 @@ body {
     border-right: 1px solid rgba(255, 255, 255, 0.05);
 }
 
-.login-logo {
-    margin-bottom: 25px;
-}
-
 .login-logo img {
-    width: 150px;
+    width: 140px;
     height: auto;
+    margin-bottom: 20px;
     display: block;
 }
 
 .login-left h1 {
-    font-size: 28px;
+    font-size: 26px;
+    color: #ffffff;
     margin-bottom: 10px;
 }
 
@@ -217,6 +253,7 @@ body {
 
 .login-left ul {
     list-style: none;
+    padding: 0;
 }
 
 .login-left ul li {
@@ -235,13 +272,18 @@ body {
 
 .login-box h2 {
     font-size: 24px;
+    color: #ffffff;
     margin-bottom: 5px;
 }
 
 .login-subtitle {
     color: #64748b;
     font-size: 13px;
-    margin-bottom: 20px;
+    margin-bottom: 25px;
+}
+
+.form-group {
+    margin-bottom: 18px;
 }
 
 .login-box label {
@@ -249,7 +291,6 @@ body {
     font-size: 13px;
     color: #94a3b8;
     margin-bottom: 6px;
-    margin-top: 15px;
 }
 
 .login-box input {
@@ -298,7 +339,7 @@ body {
     border-radius: 6px;
     font-weight: 700;
     width: 100%;
-    margin-top: 25px;
+    margin-top: 15px;
     cursor: pointer;
     transition: background 0.3s ease;
 }
@@ -307,17 +348,28 @@ body {
     background: #1d4ed8;
 }
 
+.register-text {
+    margin-top: 20px;
+    font-size: 14px;
+    color: #94a3b8;
+}
+
+.register-text a {
+    color: #4da3ff;
+    text-decoration: none;
+    font-weight: bold;
+}
+
 .back-link {
     display: inline-block;
     margin-top: 20px;
     color: #64748b;
     text-decoration: none;
     font-size: 13px;
-    transition: color 0.3s ease;
 }
 
 .back-link:hover {
-    color: #4da3ff;
+    color: #94a3b8;
 }
 
 /* FOOTER */
@@ -333,6 +385,18 @@ footer {
 
 /* RESPONSIVE DESIGN */
 @media (max-width: 768px) {
+    .navbar {
+        flex-direction: column;
+        gap: 15px;
+        padding: 15px 20px;
+    }
+
+    .navbar nav {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 15px;
+    }
+
     .login-container {
         flex-direction: column;
     }
