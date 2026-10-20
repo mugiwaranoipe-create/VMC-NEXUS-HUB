@@ -17,7 +17,6 @@ function register(event) {
     const email = emailInput.value.trim().toLowerCase();
     const password = passwordInput.value.trim();
 
-    /* EMAIL FORMAT VALIDATION (@vmc.com) */
     if (!email.includes("@vmc.com")) {
         if (message) {
             message.style.color = "#f44336";
@@ -28,7 +27,6 @@ function register(event) {
 
     let users = JSON.parse(localStorage.getItem("vmcRegisteredUsers")) || [];
 
-    /* CHECK IF USER ALREADY EXISTS */
     const userExists = users.some(u => u.email === email);
     if (userExists) {
         if (message) {
@@ -38,12 +36,9 @@ function register(event) {
         return false;
     }
 
-    /* SAVE NEW USER TO LOCAL STORAGE */
     const newUser = { name: name, email: email, password: password };
     users.push(newUser);
     localStorage.setItem("vmcRegisteredUsers", JSON.stringify(users));
-
-    /* SET LOGGED-IN SESSION */
     localStorage.setItem("vmcUser", name);
 
     if (message) {
@@ -51,7 +46,6 @@ function register(event) {
         message.innerHTML = "Registration successful! Redirecting...";
     }
 
-    /* REDIRECT TO HOME PAGE */
     window.location.href = "index.html";
     return false;
 }
@@ -69,7 +63,6 @@ function login(event) {
     const email = emailInput.value.trim().toLowerCase();
     const password = passwordInput.value.trim();
 
-    /* EMAIL FORMAT VALIDATION (@vmc.com) */
     if (!email.includes("@vmc.com")) {
         if (message) {
             message.style.color = "#f44336";
@@ -78,14 +71,12 @@ function login(event) {
         return false;
     }
 
-    /* DEFAULT ADMIN ACCOUNT */
     if (email === "admin@vmc.com" && password === "admin123") {
         localStorage.setItem("vmcUser", "Administrator");
         window.location.href = "index.html";
         return false;
     }
 
-    /* CHECK REGISTERED ACCOUNTS IN LOCALSTORAGE */
     let users = JSON.parse(localStorage.getItem("vmcRegisteredUsers")) || [];
     const foundUser = users.find(u => u.email === email && u.password === password);
 
@@ -95,7 +86,6 @@ function login(event) {
         return false;
     }
 
-    /* DEFAULT STUDENT ACCOUNT OR ANY REGISTERED USER WITH MATCHING CREDS */
     if (password === "12345" || password.length > 0) {
         const userName = email.split("@")[0];
         const formattedName = userName.charAt(0).toUpperCase() + userName.slice(1);
@@ -104,7 +94,6 @@ function login(event) {
         return false;
     }
 
-    /* INVALID CREDENTIALS */
     if (message) {
         message.style.color = "#f44336";
         message.innerHTML = "Invalid email or password.";
@@ -153,13 +142,11 @@ function checkUserAuth() {
     const user = localStorage.getItem("vmcUser");
 
     if (user) {
-        /* UPDATE ONLY THE NAVBAR LOGIN BUTTON TO A CLEAN LOGOUT BUTTON */
         const navLoginBtn = document.querySelector(".navbar nav .login-btn");
         if (navLoginBtn) {
             navLoginBtn.outerHTML = `<button onclick="logout()" class="logout-btn">Logout</button>`;
         }
 
-        /* PRE-FILL USERNAME IN FORMS */
         const studentNameInput = document.getElementById("studentName");
         if (studentNameInput) studentNameInput.value = user;
 
@@ -309,32 +296,24 @@ function showScholarship(name) {
     );
 }
 
-/* PAGE LOAD */
-document.addEventListener("DOMContentLoaded", function () {
-    checkUserAuth();
-    displayConcerns();
-    displayWallPosts();
-    console.log("VMC Nexus successfully loaded.");
-});
-
-/* ========================================
-   AUTOMATIC HORIZONTAL SLIDESHOW
-======================================== */
+/* AUTOMATIC HORIZONTAL SLIDESHOW */
 function initSlideshow() {
     const track = document.getElementById("slideTrack");
     if (!track) return;
 
     const slides = track.querySelectorAll(".slide");
+    if (slides.length === 0) return;
+
     let currentIndex = 0;
     const totalSlides = slides.length;
 
     setInterval(function () {
         currentIndex = (currentIndex + 1) % totalSlides;
         track.style.transform = `translateX(-${currentIndex * 100}%)`;
-    }, 3500); // Slides every 3.5 seconds
+    }, 3500);
 }
 
-/* Add initSlideshow() inside your DOMContentLoaded event */
+/* PAGE LOAD */
 document.addEventListener("DOMContentLoaded", function () {
     checkUserAuth();
     displayConcerns();
