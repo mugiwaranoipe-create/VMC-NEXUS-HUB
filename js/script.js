@@ -144,19 +144,19 @@ function showRegPassword() {
 
 /* LOGOUT */
 function logout() {
-    localStorage.removeItem;
+    localStorage.removeItem("vmcUser");
     window.location.href = "index.html";
 }
 
 /* CHECK AUTH STATUS & UPDATE NAVBAR ONLY */
 function checkUserAuth() {
-    const user = localStorage.getItem;
+    const user = localStorage.getItem("vmcUser");
 
     if (user) {
         /* 1. UPDATE ONLY THE NAVBAR LOGIN BUTTON TO A CLEAN LOGOUT BUTTON */
         const navLoginBtn = document.querySelector(".navbar nav .login-btn");
         if (navLoginBtn) {
-            navLoginBtn.outerHTML = `<button onclick="logoutc" class="logout-btn">Logout</button>`;
+            navLoginBtn.outerHTML = `<button onclick="logout()" class="logout-btn">Logout</button>`;
         }
 
         /* 2. HIDE THE HERO SECTION "GET STARTED" BUTTON WHEN LOGGED IN */
