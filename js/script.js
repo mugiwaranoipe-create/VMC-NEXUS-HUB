@@ -153,10 +153,16 @@ function checkUserAuth() {
     const user = localStorage.getItem("vmcUser");
 
     if (user) {
-        /* TARGET ONLY THE LOGIN BUTTON IN THE NAVBAR */
+        /* 1. UPDATE ONLY THE NAVBAR LOGIN BUTTON TO A CLEAN LOGOUT BUTTON */
         const navLoginBtn = document.querySelector(".navbar nav .login-btn");
         if (navLoginBtn) {
             navLoginBtn.outerHTML = `<button onclick="logout()" class="logout-btn">Logout</button>`;
+        }
+
+        /* 2. HIDE THE HERO SECTION "GET STARTED" BUTTON WHEN LOGGED IN */
+        const heroBtn = document.querySelector(".hero-content .main-btn");
+        if (heroBtn) {
+            heroBtn.style.display = "none";
         }
 
         /* PRE-FILL USERNAME IN FORMS */
