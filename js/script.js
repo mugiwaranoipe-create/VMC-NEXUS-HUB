@@ -33,11 +33,11 @@ function register(event) {
     users.push(newUser);
     localStorage.setItem("vmcRegisteredUsers", JSON.stringify(users));
 
-    /* SET LOGGED-IN SESSION & REDIRECT TO HOME */
+    /* SET LOGGED-IN SESSION BEFORE REDIRECT */
     localStorage.setItem("vmcUser", name);
 
     message.style.color = "#4caf50";
-    message.innerHTML = "Registration successful! Redirecting to Home...";
+    message.innerHTML = "Registration successful! Logging you in...";
 
     setTimeout(function () {
         window.location.href = "index.html";
@@ -138,14 +138,28 @@ function logout() {
 
 /* CHECK AUTH STATUS & UPDATE NAVBAR */
 function checkUserAuth() {
-    const nav = document.querySelector(".navbar nav");
     const user = localStorage.getItem("vmcUser");
+    const currentPath = window.location.pathname;
 
-    if (nav && user) {
-        const authBtn = nav.querySelector(".login-btn");
-        if (authBtn) {
-            authBtn.outerHTML = `<button onclick="logout()" class="logout-btn">Logout (${user})</button>`;
-        }
+    /* IF ALREADY LOGGED IN & VISITING LOGIN/REGISTER PAGE, REDIRECT TO HOME */
+    if (user && (currentPath.endsWith("login.html") || currentPath.endsWith("register.html"))) {
+        window.location.href = "index.html";
+        return;
+    }
+
+    /* UPDATE NAVBAR LOGIN/LOGOUT BUTTON */
+    if (user) {
+        const loginLinks = document.querySelectorAll(".login-btn, a[href='login.html']");
+        loginLinks.forEach(link => {
+            link.outerHTML = `<button onclick="logout()" class="logout-btn">Logout (${user})</button>`;
+        });
+
+        /* AUTO-FILL USER NAME IN FORMS IF LOGGED IN */
+        const studentNameInput = document.getElementById("studentName");
+        if (studentNameInput) studentNameInput.value = user;
+
+        const wallNameInput = document.getElementById("wallName");
+        if (wallNameInput) wallNameInput.value = user;
     }
 }
 
@@ -174,6 +188,11 @@ function submitConcern(event) {
 
     alert("Your concern has been submitted successfully!");
     event.target.reset();
+
+    /* RESTORE LOGGED IN USERNAME AFTER RESET */
+    const user = localStorage.getItem("vmcUser");
+    if (user) document.getElementById("studentName").value = user;
+
     displayConcerns();
 }
 
@@ -232,6 +251,11 @@ function postMessage(event) {
 
     alert("Your message has been posted!");
     event.target.reset();
+
+    /* RESTORE LOGGED IN USERNAME AFTER RESET */
+    const user = localStorage.getItem("vmcUser");
+    if (user) document.getElementById("wallName").value = user;
+
     displayWallPosts();
 }
 
@@ -288,8 +312,8 @@ function showScholarship(name) {
 
 /* PAGE LOAD */
 document.addEventListener("DOMContentLoaded", function () {
+    checkUserAuth();
     displayConcerns();
     displayWallPosts();
-    checkUserAuth();
     console.log("VMC Nexus successfully loaded.");
 });
