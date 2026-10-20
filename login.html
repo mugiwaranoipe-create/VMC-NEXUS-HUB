@@ -11,12 +11,12 @@
 
 <div class="login-container">
     <div class="login-left">
-        <div class="login-logo">
+        <div class="navbar-logo" style="margin-bottom: 20px;">
             <a href="index.html">
-                <img src="./image/hero-logo1.png" alt="VMC Nexus Logo">
+                <img src="./image/hero-logo1.png" alt="VMC Nexus Logo" style="width: 160px; height: auto;">
             </a>
         </div>
-        <h1>Welcome to VMC Nexus!</h1>
+        <h1>Welcome Back!</h1>
         <p>Login to access the VMC Nexus Student Services System.</p>
         <ul>
             <li>📢 School Announcements</li>
@@ -32,17 +32,13 @@
         <p class="login-subtitle">Enter your account details</p>
 
         <form onsubmit="return login(event)">
-            <div class="form-group">
-                <label for="email">Email</label>
-                <input type="email" id="email" placeholder="e.g. bhet@vmc.com" required>
-            </div>
+            <label>Email</label>
+            <input type="email" id="email" placeholder="e.g. bhet@vmc.com" required>
 
-            <div class="form-group">
-                <label for="password">Password</label>
-                <div class="password-box">
-                    <input type="password" id="password" placeholder="Enter your password" required>
-                    <button type="button" onclick="showPassword()" id="showButton">SHOW</button>
-                </div>
+            <label>Password</label>
+            <div class="password-box">
+                <input type="password" id="password" placeholder="Enter your password" required>
+                <button type="button" onclick="showPassword()" id="showButton">SHOW</button>
             </div>
 
             <button type="submit" class="login-button">LOGIN</button>
@@ -50,9 +46,9 @@
 
         <p id="login-message" style="margin-top: 15px; font-weight: bold;"></p>
 
-        <p class="register-text">
+        <p style="margin-top: 20px; font-size: 14px; color: #94a3b8;">
             Don't have an account? 
-            <a href="register.html">Register Account</a>
+            <a href="register.html" style="color: #4da3ff; text-decoration: none; font-weight: bold;">Register Account</a>
         </p>
 
         <a href="index.html" class="back-link">← Back to Home</a>
