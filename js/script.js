@@ -2,15 +2,64 @@
    VMC NEXUS JAVASCRIPT
 ======================================== */
 
+/* REGISTER ACCOUNT */
+function register(event) {
+    event.preventDefault();
+
+    const name = document.getElementById("regName").value.trim();
+    const email = document.getElementById("regEmail").value.trim().toLowerCase();
+    const password = document.getElementById("regPassword").value.trim();
+    const message = document.getElementById("register-message");
+
+    /* EMAIL FORMAT VALIDATION (@vmc.com) */
+    if (!email.endsWith("@vmc.com")) {
+        message.style.color = "#f44336";
+        message.innerHTML = "Email must end with @vmc.com (e.g., bhet@vmc.com)";
+        return;
+    }
+
+    let users = JSON.parse(localStorage.getItem("vmcRegisteredUsers")) || [];
+
+    /* CHECK IF USER ALREADY EXISTS */
+    const userExists = users.some(u => u.email === email);
+    if (userExists) {
+        message.style.color = "#f44336";
+        message.innerHTML = "An account with this email already exists!";
+        return;
+    }
+
+    /* SAVE NEW USER */
+    const newUser = { name: name, email: email, password: password };
+    users.push(newUser);
+    localStorage.setItem("vmcRegisteredUsers", JSON.stringify(users));
+
+    /* SET LOGGED-IN SESSION & REDIRECT TO HOME */
+    localStorage.setItem("vmcUser", name);
+
+    message.style.color = "#4caf50";
+    message.innerHTML = "Registration successful! Redirecting to Home...";
+
+    setTimeout(function () {
+        window.location.href = "index.html";
+    }, 1000);
+}
+
 /* LOGIN */
 function login(event) {
     event.preventDefault();
 
-    const email = document.getElementById("email").value.trim();
+    const email = document.getElementById("email").value.trim().toLowerCase();
     const password = document.getElementById("password").value.trim();
     const message = document.getElementById("login-message");
 
-    /* STUDENT ACCOUNT */
+    /* EMAIL FORMAT VALIDATION (@vmc.com) */
+    if (!email.endsWith("@vmc.com")) {
+        message.style.color = "#f44336";
+        message.innerHTML = "Email must end with @vmc.com (e.g., bhet@vmc.com)";
+        return;
+    }
+
+    /* CHECK DEFAULT ACCOUNTS */
     if (email === "student@vmc.com" && password === "12345") {
         localStorage.setItem("vmcUser", "Student");
         message.style.color = "#4caf50";
@@ -19,11 +68,9 @@ function login(event) {
         setTimeout(function () {
             window.location.href = "index.html";
         }, 1000);
-
         return;
     }
 
-    /* ADMIN ACCOUNT */
     if (email === "admin@vmc.com" && password === "admin123") {
         localStorage.setItem("vmcUser", "Administrator");
         message.style.color = "#4caf50";
@@ -32,19 +79,47 @@ function login(event) {
         setTimeout(function () {
             window.location.href = "index.html";
         }, 1000);
-
         return;
     }
 
-    /* WRONG LOGIN */
+    /* CHECK REGISTERED ACCOUNTS IN LOCALSTORAGE */
+    let users = JSON.parse(localStorage.getItem("vmcRegisteredUsers")) || [];
+    const foundUser = users.find(u => u.email === email && u.password === password);
+
+    if (foundUser) {
+        localStorage.setItem("vmcUser", foundUser.name);
+        message.style.color = "#4caf50";
+        message.innerHTML = "Login successful! Redirecting...";
+
+        setTimeout(function () {
+            window.location.href = "index.html";
+        }, 1000);
+        return;
+    }
+
+    /* INVALID CREDENTIALS */
     message.style.color = "#f44336";
     message.innerHTML = "Invalid email or password.";
 }
 
-/* SHOW / HIDE PASSWORD */
+/* SHOW / HIDE PASSWORD - LOGIN */
 function showPassword() {
     const password = document.getElementById("password");
     const button = document.getElementById("showButton");
+
+    if (password.type === "password") {
+        password.type = "text";
+        button.innerHTML = "HIDE";
+    } else {
+        password.type = "password";
+        button.innerHTML = "SHOW";
+    }
+}
+
+/* SHOW / HIDE PASSWORD - REGISTER */
+function showRegPassword() {
+    const password = document.getElementById("regPassword");
+    const button = document.getElementById("regShowButton");
 
     if (password.type === "password") {
         password.type = "text";
@@ -59,6 +134,19 @@ function showPassword() {
 function logout() {
     localStorage.removeItem("vmcUser");
     window.location.href = "index.html";
+}
+
+/* CHECK AUTH STATUS & UPDATE NAVBAR */
+function checkUserAuth() {
+    const nav = document.querySelector(".navbar nav");
+    const user = localStorage.getItem("vmcUser");
+
+    if (nav && user) {
+        const authBtn = nav.querySelector(".login-btn");
+        if (authBtn) {
+            authBtn.outerHTML = `<button onclick="logout()" class="logout-btn">Logout (${user})</button>`;
+        }
+    }
 }
 
 /* SUBMIT CONCERN */
@@ -196,19 +284,6 @@ function showScholarship(name) {
         name +
         "\n\nPlease contact the school administration for requirements, application dates, and complete scholarship information."
     );
-}
-
-/* CHECK AUTH STATUS & UPDATE NAVBAR */
-function checkUserAuth() {
-    const nav = document.querySelector(".navbar nav");
-    const user = localStorage.getItem("vmcUser");
-
-    if (nav && user) {
-        const authBtn = nav.querySelector(".login-btn");
-        if (authBtn) {
-            authBtn.outerHTML = `<button onclick="logout()" class="logout-btn">Logout (${user})</button>`;
-        }
-    }
 }
 
 /* PAGE LOAD */
