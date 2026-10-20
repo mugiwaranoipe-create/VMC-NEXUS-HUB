@@ -97,7 +97,6 @@ function login(event) {
 
     /* DEFAULT STUDENT ACCOUNT OR ANY REGISTERED USER WITH MATCHING CREDS */
     if (password === "12345" || password.length > 0) {
-        // If password is present and valid account exists, log in using email prefix as username
         const userName = email.split("@")[0];
         const formattedName = userName.charAt(0).toUpperCase() + userName.slice(1);
         localStorage.setItem("vmcUser", formattedName);
@@ -149,16 +148,16 @@ function logout() {
     window.location.href = "index.html";
 }
 
-/* CHECK AUTH STATUS & UPDATE NAVBAR */
+/* CHECK AUTH STATUS & UPDATE NAVBAR ONLY */
 function checkUserAuth() {
     const user = localStorage.getItem("vmcUser");
 
     if (user) {
-        /* UPDATE NAVBAR LOGIN LINK TO LOGOUT BUTTON */
-        const loginLinks = document.querySelectorAll(".login-btn, a[href='login.html']");
-        loginLinks.forEach(link => {
-            link.outerHTML = `<button onclick="logout()" class="logout-btn">Logout (${user})</button>`;
-        });
+        /* TARGET ONLY THE LOGIN BUTTON IN THE NAVBAR */
+        const navLoginBtn = document.querySelector(".navbar nav .login-btn");
+        if (navLoginBtn) {
+            navLoginBtn.outerHTML = `<button onclick="logout()" class="logout-btn">Logout</button>`;
+        }
 
         /* PRE-FILL USERNAME IN FORMS */
         const studentNameInput = document.getElementById("studentName");
