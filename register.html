@@ -4,16 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Register Account - VMC Nexus</title>
-    <link rel="stylesheet" href="./css/style.css">
+    <link rel="stylesheet" href="css/style.css">
 </head>
 
 <body class="login-page">
 
 <div class="login-container">
     <div class="login-left">
-        <div class="login-logo">
+        <div class="navbar-logo" style="margin-bottom: 20px;">
             <a href="index.html">
-                <img src="./image/hero-logo1.png" alt="VMC Nexus Logo">
+                <img src="./image/hero-logo1.png" alt="VMC Nexus Logo" style="width: 160px; height: auto;">
             </a>
         </div>
         <h1>Join VMC Nexus!</h1>
@@ -32,13 +32,13 @@
         <p class="login-subtitle">Enter your account details</p>
 
         <form onsubmit="return register(event)">
-            <label for="regName">Full Name</label>
+            <label>Full Name</label>
             <input type="text" id="regName" placeholder="Enter your full name" required>
 
-            <label for="regEmail">Email Address</label>
+            <label>Email Address</label>
             <input type="email" id="regEmail" placeholder="e.g. bhet@vmc.com" required>
 
-            <label for="regPassword">Password</label>
+            <label>Password</label>
             <div class="password-box">
                 <input type="password" id="regPassword" placeholder="Create a password" required>
                 <button type="button" onclick="showRegPassword()" id="regShowButton">SHOW</button>
@@ -51,13 +51,13 @@
 
         <p style="margin-top: 20px; font-size: 14px; color: #94a3b8;">
             Already have an account? 
-            <a href="login.html" style="color: #4da3ff; text-decoration: none; font-weight: bold;">Login here</a>
+            <a href="login.html" style="color: #4da3ff; text-decoration: none;">Login here</a>
         </p>
 
         <a href="index.html" class="back-link">← Back to Home</a>
     </div>
 </div>
 
-<script src="./js/script.js"></script>
+<script src="js/script.js"></script>
 </body>
 </html>
