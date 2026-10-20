@@ -17,6 +17,7 @@ function register(event) {
     const email = emailInput.value.trim().toLowerCase();
     const password = passwordInput.value.trim();
 
+    /* EMAIL FORMAT VALIDATION (@vmc.com) */
     if (!email.includes("@vmc.com")) {
         if (message) {
             message.style.color = "#f44336";
@@ -296,19 +297,10 @@ function showScholarship(name) {
     );
 }
 
-/* AUTOMATIC HORIZONTAL SLIDESHOW (LEFT-TO-RIGHT) */
-function initSlideshow() {
-    const track = document.getElementById("slideTrack");
-    if (!track) return;
-
-    const slides = track.querySelectorAll(".slide");
-    if (slides.length === 0) return;
-
-    let currentIndex = 0;
-    const totalSlides = slides.length;
-
-    setInterval(function () {
-        currentIndex = (currentIndex + 1) % totalSlides;
-        track.style.transform = `translateX(-${currentIndex * 100}%)`;
-    }, 3000); // Transitions every 3 seconds
-}
+/* PAGE LOAD */
+document.addEventListener("DOMContentLoaded", function () {
+    checkUserAuth();
+    displayConcerns();
+    displayWallPosts();
+    console.log("VMC Nexus successfully loaded.");
+});
