@@ -316,3 +316,29 @@ document.addEventListener("DOMContentLoaded", function () {
     displayWallPosts();
     console.log("VMC Nexus successfully loaded.");
 });
+
+/* ========================================
+   AUTOMATIC HORIZONTAL SLIDESHOW
+======================================== */
+function initSlideshow() {
+    const track = document.getElementById("slideTrack");
+    if (!track) return;
+
+    const slides = track.querySelectorAll(".slide");
+    let currentIndex = 0;
+    const totalSlides = slides.length;
+
+    setInterval(function () {
+        currentIndex = (currentIndex + 1) % totalSlides;
+        track.style.transform = `translateX(-${currentIndex * 100}%)`;
+    }, 3500); // Slides every 3.5 seconds
+}
+
+/* Add initSlideshow() inside your DOMContentLoaded event */
+document.addEventListener("DOMContentLoaded", function () {
+    checkUserAuth();
+    displayConcerns();
+    displayWallPosts();
+    initSlideshow();
+    console.log("VMC Nexus successfully loaded.");
+});
