@@ -4,16 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login - VMC Nexus</title>
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="./css/style.css">
 </head>
 
 <body class="login-page">
 
 <div class="login-container">
     <div class="login-left">
-        <div class="navbar-logo" style="margin-bottom: 20px;">
+        <div class="login-logo">
             <a href="index.html">
-                <img src="./image/hero-logo1.png" alt="VMC Nexus Logo" style="width: 160px; height: auto;">
+                <img src="./image/hero-logo1.png" alt="VMC Nexus Logo">
             </a>
         </div>
         <h1>Welcome Back!</h1>
@@ -32,10 +32,10 @@
         <p class="login-subtitle">Enter your account details</p>
 
         <form onsubmit="return login(event)">
-            <label>Email</label>
+            <label for="email">Email</label>
             <input type="email" id="email" placeholder="e.g. bhet@vmc.com" required>
 
-            <label>Password</label>
+            <label for="password">Password</label>
             <div class="password-box">
                 <input type="password" id="password" placeholder="Enter your password" required>
                 <button type="button" onclick="showPassword()" id="showButton">SHOW</button>
@@ -55,6 +55,6 @@
     </div>
 </div>
 
-<script src="js/script.js"></script>
+<script src="./js/script.js"></script>
 </body>
 </html>
