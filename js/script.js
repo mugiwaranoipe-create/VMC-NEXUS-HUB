@@ -18,62 +18,30 @@ function login(event) {
     const message =
         document.getElementById("login-message");
 
+   /* STUDENT ACCOUNT */
+if (email === "student@vmc.com" && password === "12345") {
+    localStorage.setItem("vmcUser", "Student");
+    message.style.color = "green";
+    message.innerHTML = "Login successful! Redirecting...";
 
-    /* STUDENT ACCOUNT */
+    setTimeout(function () {
+        window.location.href = "index.html"; // Changed from dashboard.html
+    }, 1000);
 
-    if (
-        email === "student@vmc.com" &&
-        password === "12345"
-    ) {
+    return;
+}
+   /* ADMIN ACCOUNT */
+if (email === "admin@vmc.com" && password === "admin123") {
+    localStorage.setItem("vmcUser", "Administrator");
+    message.style.color = "green";
+    message.innerHTML = "Admin login successful!";
 
-        localStorage.setItem(
-            "vmcUser",
-            "Student"
-        );
+    setTimeout(function () {
+        window.location.href = "index.html"; // Changed from dashboard.html
+    }, 1000);
 
-        message.style.color = "green";
-
-        message.innerHTML =
-            "Login successful! Redirecting...";
-
-        setTimeout(function () {
-
-            window.location.href =
-                "dashboard.html";
-
-        }, 1000);
-
-        return;
-    }
-
-
-    /* ADMIN ACCOUNT */
-
-    if (
-        email === "admin@vmc.com" &&
-        password === "admin123"
-    ) {
-
-        localStorage.setItem(
-            "vmcUser",
-            "Administrator"
-        );
-
-        message.style.color = "green";
-
-        message.innerHTML =
-            "Admin login successful!";
-
-        setTimeout(function () {
-
-            window.location.href =
-                "dashboard.html";
-
-        }, 1000);
-
-        return;
-    }
-
+    return;
+}
 
     /* WRONG LOGIN */
 
