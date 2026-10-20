@@ -1,5 +1,5 @@
 /* ========================================
-   VMC NEXUS MAIN STYLESHEET (DARK THEME)
+   VMC NEXUS MAIN STYLESHEET (BASELINE)
 ======================================== */
 
 * {
@@ -86,7 +86,7 @@ body {
     background-color: #dc2626;
 }
 
-/* HOMEPAGE HERO SECTION */
+/* HERO SECTION */
 .hero {
     padding: 60px 20px 40px;
     text-align: center;
@@ -106,11 +106,10 @@ body {
 }
 
 .home-logo {
-    width: 180px !important;
-    max-width: 180px !important;
-    height: auto !important;
-    margin: 0 auto 15px auto !important;
-    display: block !important;
+    width: 180px;
+    height: auto;
+    margin: 0 auto 15px auto;
+    display: block;
 }
 
 .small-title {
@@ -149,7 +148,7 @@ body {
     line-height: 1.6;
 }
 
-/* HOMEPAGE FEATURE CARDS */
+/* FEATURE CARDS */
 .features {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -198,7 +197,7 @@ body {
     font-size: 13px;
 }
 
-/* SUBPAGES CONTAINER & HEADERS */
+/* SUBPAGE CONTAINER & HEADERS */
 .page-container {
     max-width: 1000px;
     margin: 40px auto;
@@ -223,7 +222,7 @@ body {
     font-size: 15px;
 }
 
-/* SUBPAGE CARDS, FORMS, GRIDS */
+/* SUBPAGE CARDS, FORMS, & GRIDS */
 .form-card, .announcement-card, .service-card, .book-card, .wall-post {
     background: #081120;
     border: 1px solid rgba(255, 255, 255, 0.05);
