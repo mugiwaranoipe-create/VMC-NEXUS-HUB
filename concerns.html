@@ -9,9 +9,7 @@
 <body>
 
 <header class="navbar">
-    <a href="index.html" class="navbar-logo">
-        <img src="./image/navi-barlogo1.jpg" alt="VMC Nexus Navbar Logo">
-    </a>
+    <a href="index.html" class="navbar-logo"><img src="./image/navi-barlogo1.jpg" alt="VMC Nexus Logo"></a>
     <nav>
         <a href="index.html">Home</a>
         <a href="announcement.html">Announcements</a>
@@ -23,48 +21,42 @@
     </nav>
 </header>
 
-<main class="page-container">
+<div class="page-container">
     <div class="page-header">
-        <h1>📝 School Concern Management</h1>
-        <p>Submit a school-related concern or request.</p>
+        <h1>School Concerns</h1>
+        <p>Submit your concerns directly to campus administration.</p>
     </div>
 
     <div class="form-card">
         <form onsubmit="return submitConcern(event)">
-            <label>Student Name</label>
-            <input type="text" id="studentName" placeholder="Enter your name" required>
+            <label for="studentName">Student Name</label>
+            <input type="text" id="studentName" placeholder="Enter your full name" required>
 
-            <label>Category</label>
+            <label for="category">Category</label>
             <select id="category" required>
-                <option value="">Select Category</option>
-                <option>Academic</option>
-                <option>Library</option>
-                <option>Facilities</option>
-                <option>Student Services</option>
-                <option>Teacher Concern</option>
-                <option>Other</option>
+                <option value="Academic">Academic</option>
+                <option value="Facilities">Facilities</option>
+                <option value="Financial">Financial</option>
+                <option value="General">General</option>
             </select>
 
-            <label>Subject</label>
-            <input type="text" id="concernSubject" placeholder="Concern subject" required>
+            <label for="concernSubject">Subject</label>
+            <input type="text" id="concernSubject" placeholder="Brief subject" required>
 
-            <label>Message</label>
-            <textarea id="concernMessage" rows="6" placeholder="Explain your concern..." required></textarea>
+            <label for="concernMessage">Concern Details</label>
+            <textarea id="concernMessage" rows="5" placeholder="Explain your concern in detail..." required></textarea>
 
-            <button type="submit" class="main-btn">Submit Concern</button>
+            <button type="submit" class="main-btn">SUBMIT CONCERN</button>
         </form>
     </div>
 
-    <div class="form-card">
+    <div class="page-header" style="margin-top: 40px;">
         <h2>Submitted Concerns</h2>
-        <div id="concernList"></div>
     </div>
-</main>
+    <div id="concernList"></div>
+</div>
 
-<footer>
-    <p>© 2026 VMC Nexus | Student Services System</p>
-</footer>
-
+<footer><p>© 2026 VMC Nexus | Student Services System</p></footer>
 <script src="js/script.js"></script>
 </body>
 </html>
