@@ -296,7 +296,7 @@ function showScholarship(name) {
     );
 }
 
-/* AUTOMATIC HORIZONTAL SLIDESHOW */
+/* AUTOMATIC HORIZONTAL SLIDESHOW (LEFT-TO-RIGHT) */
 function initSlideshow() {
     const track = document.getElementById("slideTrack");
     if (!track) return;
@@ -310,14 +310,5 @@ function initSlideshow() {
     setInterval(function () {
         currentIndex = (currentIndex + 1) % totalSlides;
         track.style.transform = `translateX(-${currentIndex * 100}%)`;
-    }, 3500);
+    }, 3000); // Transitions every 3 seconds
 }
-
-/* PAGE LOAD */
-document.addEventListener("DOMContentLoaded", function () {
-    checkUserAuth();
-    displayConcerns();
-    displayWallPosts();
-    initSlideshow();
-    console.log("VMC Nexus successfully loaded.");
-});
