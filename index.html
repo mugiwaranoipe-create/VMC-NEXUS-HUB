@@ -4,10 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>VMC Nexus - Integrated Student Services System</title>
-    <link rel="stylesheet" href="css/style.css">
-
-    <!-- DIRECT EMBEDDED STYLES TO ENSURE LAYOUT NEVER BREAKS -->
+    
     <style>
+        /* GLOBAL RESET */
         * {
             margin: 0;
             padding: 0;
@@ -24,7 +23,7 @@
             flex-direction: column;
         }
 
-        /* NAVBAR (UNTOUCHED LOGIC & LINKS) */
+        /* NAVIGATION BAR */
         .navbar {
             display: flex;
             justify-content: space-between;
@@ -68,7 +67,7 @@
             padding: 8px 20px;
             border-radius: 6px;
             font-weight: 600 !important;
-            text-decoration: none;
+            text-decoration: none !important;
             transition: background-color 0.3s ease !important;
         }
 
@@ -92,7 +91,7 @@
             background-color: #dc2626;
         }
 
-        /* HERO SECTION (CENTERED LAYOUT) */
+        /* HERO SECTION (CENTERED & SIZED LOGO) */
         .hero {
             padding: 60px 20px 40px;
             text-align: center;
@@ -106,18 +105,22 @@
             max-width: 800px;
             margin: 0 auto;
             text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
 
         .home-logo {
-            width: 180px;
-            height: auto;
-            margin: 0 auto 15px auto;
-            display: block;
+            width: 180px !important;
+            max-width: 180px !important;
+            height: auto !important;
+            margin: 0 auto 15px auto !important;
+            display: block !important;
         }
 
         .small-title {
-            color: #94a3b8;
-            font-weight: 600;
+            color: #4da3ff;
+            font-weight: 700;
             letter-spacing: 2px;
             font-size: 13px;
             margin-bottom: 8px;
@@ -143,11 +146,12 @@
             margin-bottom: 15px;
         }
 
-        .hero p {
+        .hero-desc {
             max-width: 650px;
             margin: 0 auto;
             color: #64748b;
             font-size: 15px;
+            line-height: 1.6;
         }
 
         /* FEATURE CARDS (4 CARDS HORIZONTAL GRID) */
@@ -199,6 +203,7 @@
             font-size: 13px;
         }
 
+        /* FOOTER */
         footer {
             text-align: center;
             padding: 25px 20px;
@@ -252,7 +257,7 @@
 
         <h2>Integrated Student Services System</h2>
 
-        <p>
+        <p class="hero-desc">
             A web-based platform designed to connect students with school announcements,
             concerns, scholarships, library services, and student activities.
         </p>
