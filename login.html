@@ -13,7 +13,7 @@
     <div class="login-left">
         <div class="navbar-logo" style="margin-bottom: 20px;">
             <a href="index.html">
-                <img src="image/hero-logo1.png" alt="VMC Nexus Logo" style="width: 160px; height: auto;">
+                <img src="./image/hero-logo1.png" alt="VMC Nexus Logo" style="width: 160px; height: auto;">
             </a>
         </div>
         <h1>Welcome Back!</h1>
@@ -33,7 +33,7 @@
 
         <form onsubmit="login(event)">
             <label>Email</label>
-            <input type="email" id="email" placeholder="Enter your email" required>
+            <input type="email" id="email" placeholder="e.g. bhet@vmc.com" required>
 
             <label>Password</label>
             <div class="password-box">
@@ -44,7 +44,12 @@
             <button type="submit" class="login-button">LOGIN</button>
         </form>
 
-        <p id="login-message"></p>
+        <p id="login-message" style="margin-top: 15px; font-weight: bold;"></p>
+
+        <p style="margin-top: 20px; font-size: 14px; color: #94a3b8;">
+            Don't have an account? 
+            <a href="register.html" style="color: #4da3ff; text-decoration: none; font-weight: bold;">Register Account</a>
+        </p>
 
         <a href="index.html" class="back-link">← Back to Home</a>
     </div>
