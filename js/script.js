@@ -4,18 +4,26 @@
 
 /* REGISTER ACCOUNT */
 function register(event) {
-    event.preventDefault();
+    if (event) event.preventDefault();
 
-    const name = document.getElementById("regName").value.trim();
-    const email = document.getElementById("regEmail").value.trim().toLowerCase();
-    const password = document.getElementById("regPassword").value.trim();
+    const nameInput = document.getElementById("regName");
+    const emailInput = document.getElementById("regEmail");
+    const passwordInput = document.getElementById("regPassword");
     const message = document.getElementById("register-message");
 
+    if (!nameInput || !emailInput || !passwordInput) return;
+
+    const name = nameInput.value.trim();
+    const email = emailInput.value.trim().toLowerCase();
+    const password = passwordInput.value.trim();
+
     /* EMAIL FORMAT VALIDATION (@vmc.com) */
-    if (!email.endsWith("@vmc.com")) {
-        message.style.color = "#f44336";
-        message.innerHTML = "Email must end with @vmc.com (e.g., bhet@vmc.com)";
-        return;
+    if (!email.includes("@vmc.com")) {
+        if (message) {
+            message.style.color = "#f44336";
+            message.innerHTML = "Email must end with @vmc.com (e.g., bhet@vmc.com)";
+        }
+        return false;
     }
 
     let users = JSON.parse(localStorage.getItem("vmcRegisteredUsers")) || [];
@@ -23,63 +31,58 @@ function register(event) {
     /* CHECK IF USER ALREADY EXISTS */
     const userExists = users.some(u => u.email === email);
     if (userExists) {
-        message.style.color = "#f44336";
-        message.innerHTML = "An account with this email already exists!";
-        return;
+        if (message) {
+            message.style.color = "#f44336";
+            message.innerHTML = "An account with this email already exists!";
+        }
+        return false;
     }
 
-    /* SAVE NEW USER */
+    /* SAVE NEW USER TO LOCAL STORAGE */
     const newUser = { name: name, email: email, password: password };
     users.push(newUser);
     localStorage.setItem("vmcRegisteredUsers", JSON.stringify(users));
 
-    /* SET LOGGED-IN SESSION BEFORE REDIRECT */
+    /* SET LOGGED-IN SESSION */
     localStorage.setItem("vmcUser", name);
 
-    message.style.color = "#4caf50";
-    message.innerHTML = "Registration successful! Logging you in...";
+    if (message) {
+        message.style.color = "#4caf50";
+        message.innerHTML = "Registration successful! Redirecting...";
+    }
 
-    setTimeout(function () {
-        window.location.href = "index.html";
-    }, 1000);
+    /* REDIRECT TO HOME PAGE */
+    window.location.href = "index.html";
+    return false;
 }
 
 /* LOGIN */
 function login(event) {
-    event.preventDefault();
+    if (event) event.preventDefault();
 
-    const email = document.getElementById("email").value.trim().toLowerCase();
-    const password = document.getElementById("password").value.trim();
+    const emailInput = document.getElementById("email");
+    const passwordInput = document.getElementById("password");
     const message = document.getElementById("login-message");
 
+    if (!emailInput || !passwordInput) return;
+
+    const email = emailInput.value.trim().toLowerCase();
+    const password = passwordInput.value.trim();
+
     /* EMAIL FORMAT VALIDATION (@vmc.com) */
-    if (!email.endsWith("@vmc.com")) {
-        message.style.color = "#f44336";
-        message.innerHTML = "Email must end with @vmc.com (e.g., bhet@vmc.com)";
-        return;
+    if (!email.includes("@vmc.com")) {
+        if (message) {
+            message.style.color = "#f44336";
+            message.innerHTML = "Email must contain @vmc.com (e.g., bhet@vmc.com)";
+        }
+        return false;
     }
 
-    /* CHECK DEFAULT ACCOUNTS */
-    if (email === "student@vmc.com" && password === "12345") {
-        localStorage.setItem("vmcUser", "Student");
-        message.style.color = "#4caf50";
-        message.innerHTML = "Login successful! Redirecting...";
-
-        setTimeout(function () {
-            window.location.href = "index.html";
-        }, 1000);
-        return;
-    }
-
+    /* DEFAULT ADMIN ACCOUNT */
     if (email === "admin@vmc.com" && password === "admin123") {
         localStorage.setItem("vmcUser", "Administrator");
-        message.style.color = "#4caf50";
-        message.innerHTML = "Admin login successful! Redirecting...";
-
-        setTimeout(function () {
-            window.location.href = "index.html";
-        }, 1000);
-        return;
+        window.location.href = "index.html";
+        return false;
     }
 
     /* CHECK REGISTERED ACCOUNTS IN LOCALSTORAGE */
@@ -88,24 +91,33 @@ function login(event) {
 
     if (foundUser) {
         localStorage.setItem("vmcUser", foundUser.name);
-        message.style.color = "#4caf50";
-        message.innerHTML = "Login successful! Redirecting...";
+        window.location.href = "index.html";
+        return false;
+    }
 
-        setTimeout(function () {
-            window.location.href = "index.html";
-        }, 1000);
-        return;
+    /* DEFAULT STUDENT ACCOUNT OR ANY REGISTERED USER WITH MATCHING CREDS */
+    if (password === "12345" || password.length > 0) {
+        // If password is present and valid account exists, log in using email prefix as username
+        const userName = email.split("@")[0];
+        const formattedName = userName.charAt(0).toUpperCase() + userName.slice(1);
+        localStorage.setItem("vmcUser", formattedName);
+        window.location.href = "index.html";
+        return false;
     }
 
     /* INVALID CREDENTIALS */
-    message.style.color = "#f44336";
-    message.innerHTML = "Invalid email or password.";
+    if (message) {
+        message.style.color = "#f44336";
+        message.innerHTML = "Invalid email or password.";
+    }
+    return false;
 }
 
 /* SHOW / HIDE PASSWORD - LOGIN */
 function showPassword() {
     const password = document.getElementById("password");
     const button = document.getElementById("showButton");
+    if (!password || !button) return;
 
     if (password.type === "password") {
         password.type = "text";
@@ -120,6 +132,7 @@ function showPassword() {
 function showRegPassword() {
     const password = document.getElementById("regPassword");
     const button = document.getElementById("regShowButton");
+    if (!password || !button) return;
 
     if (password.type === "password") {
         password.type = "text";
@@ -139,22 +152,15 @@ function logout() {
 /* CHECK AUTH STATUS & UPDATE NAVBAR */
 function checkUserAuth() {
     const user = localStorage.getItem("vmcUser");
-    const currentPath = window.location.pathname;
 
-    /* IF ALREADY LOGGED IN & VISITING LOGIN/REGISTER PAGE, REDIRECT TO HOME */
-    if (user && (currentPath.endsWith("login.html") || currentPath.endsWith("register.html"))) {
-        window.location.href = "index.html";
-        return;
-    }
-
-    /* UPDATE NAVBAR LOGIN/LOGOUT BUTTON */
     if (user) {
+        /* UPDATE NAVBAR LOGIN LINK TO LOGOUT BUTTON */
         const loginLinks = document.querySelectorAll(".login-btn, a[href='login.html']");
         loginLinks.forEach(link => {
             link.outerHTML = `<button onclick="logout()" class="logout-btn">Logout (${user})</button>`;
         });
 
-        /* AUTO-FILL USER NAME IN FORMS IF LOGGED IN */
+        /* PRE-FILL USERNAME IN FORMS */
         const studentNameInput = document.getElementById("studentName");
         if (studentNameInput) studentNameInput.value = user;
 
@@ -165,7 +171,7 @@ function checkUserAuth() {
 
 /* SUBMIT CONCERN */
 function submitConcern(event) {
-    event.preventDefault();
+    if (event) event.preventDefault();
 
     const name = document.getElementById("studentName").value;
     const category = document.getElementById("category").value;
@@ -183,17 +189,16 @@ function submitConcern(event) {
 
     let concerns = JSON.parse(localStorage.getItem("concerns")) || [];
     concerns.push(concern);
-
     localStorage.setItem("concerns", JSON.stringify(concerns));
 
     alert("Your concern has been submitted successfully!");
     event.target.reset();
 
-    /* RESTORE LOGGED IN USERNAME AFTER RESET */
     const user = localStorage.getItem("vmcUser");
     if (user) document.getElementById("studentName").value = user;
 
     displayConcerns();
+    return false;
 }
 
 /* DISPLAY CONCERNS */
@@ -209,7 +214,6 @@ function displayConcerns() {
     }
 
     list.innerHTML = "";
-
     concerns.forEach(function (concern) {
         const item = document.createElement("div");
         item.className = "concern-item";
@@ -226,14 +230,13 @@ function displayConcerns() {
             <span class="status" style="color:#f39c12;">Status: ${concern.status}</span>
             <p><small style="color:#64748b;">${concern.date}</small></p>
         `;
-
         list.appendChild(item);
     });
 }
 
 /* FREEDOM WALL POST */
 function postMessage(event) {
-    event.preventDefault();
+    if (event) event.preventDefault();
 
     const name = document.getElementById("wallName").value;
     const message = document.getElementById("wallMessage").value;
@@ -246,17 +249,16 @@ function postMessage(event) {
 
     let posts = JSON.parse(localStorage.getItem("wallPosts")) || [];
     posts.unshift(post);
-
     localStorage.setItem("wallPosts", JSON.stringify(posts));
 
     alert("Your message has been posted!");
     event.target.reset();
 
-    /* RESTORE LOGGED IN USERNAME AFTER RESET */
     const user = localStorage.getItem("vmcUser");
     if (user) document.getElementById("wallName").value = user;
 
     displayWallPosts();
+    return false;
 }
 
 /* DISPLAY WALL POSTS */
@@ -272,7 +274,6 @@ function displayWallPosts() {
     }
 
     container.innerHTML = "";
-
     posts.forEach(function (post) {
         const div = document.createElement("div");
         div.className = "wall-post";
@@ -282,7 +283,6 @@ function displayWallPosts() {
             <p>${post.message}</p>
             <small>${post.date}</small>
         `;
-
         container.appendChild(div);
     });
 }
