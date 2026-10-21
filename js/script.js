@@ -5,19 +5,17 @@
 /* CHECK AUTH STATUS & ROUTE PROTECTION */
 function checkUserAuth() {
     const user = localStorage.getItem("vmcUser");
-    const isAuthPage = window.location.pathname.endsWith("index.html") || 
-                       window.location.pathname.endsWith("/") || 
-                       window.location.pathname.endsWith("register.html");
+    const isAuthPage = window.location.pathname.endsWith("login.html") || window.location.pathname.endsWith("register.html");
 
-    // 1. If NOT logged in and trying to view internal pages -> Redirect to Login (index.html)
-    if (!user && !window.location.pathname.endsWith("index.html") && !window.location.pathname.endsWith("register.html") && window.location.pathname !== "/") {
-        window.location.href = "index.html";
+    // 1. If NOT logged in and NOT on login/register page -> Redirect to Login
+    if (!user && !isAuthPage) {
+        window.location.href = "login.html";
         return;
     }
 
-    // 2. If ALREADY logged in and sitting on the login page (index.html) -> Redirect to Home (home.html)
-    if (user && (window.location.pathname.endsWith("index.html") || window.location.pathname.endsWith("/"))) {
-        window.location.href = "home.html";
+    // 2. If ALREADY logged in and trying to access login/register -> Redirect to Home
+    if (user && isAuthPage) {
+        window.location.href = "index.html";
         return;
     }
 
@@ -62,7 +60,7 @@ function login(event) {
     /* DEFAULT ADMIN ACCOUNT */
     if (email === "admin@vmc.com" && password === "admin123") {
         localStorage.setItem("vmcUser", "Administrator");
-        window.location.href = "home.html";
+        window.location.href = "index.html";
         return false;
     }
 
@@ -72,7 +70,7 @@ function login(event) {
 
     if (foundUser) {
         localStorage.setItem("vmcUser", foundUser.name);
-        window.location.href = "home.html";
+        window.location.href = "index.html";
         return false;
     }
 
@@ -81,7 +79,7 @@ function login(event) {
         const userName = email.split("@")[0];
         const formattedName = userName.charAt(0).toUpperCase() + userName.slice(1);
         localStorage.setItem("vmcUser", formattedName);
-        window.location.href = "home.html";
+        window.location.href = "index.html";
         return false;
     }
 
@@ -134,7 +132,7 @@ function register(event) {
     users.push(newUser);
     localStorage.setItem("vmcRegisteredUsers", JSON.stringify(users));
 
-    /* SET LOGGED-IN SESSION & REDIRECT TO HOME.HTML */
+    /* SET LOGGED-IN SESSION & REDIRECT TO HOMEPAGE */
     localStorage.setItem("vmcUser", name);
 
     if (message) {
@@ -143,7 +141,7 @@ function register(event) {
     }
 
     setTimeout(() => {
-        window.location.href = "home.html";
+        window.location.href = "index.html";
     }, 1000);
 
     return false;
@@ -154,7 +152,7 @@ function logout() {
     const confirmLogout = confirm("Are you sure you want to log out?");
     if (confirmLogout) {
         localStorage.removeItem("vmcUser");
-        window.location.href = "index.html"; // Redirects back to login page
+        window.location.href = "login.html";
     }
 }
 
