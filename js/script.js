@@ -2,6 +2,95 @@
    VMC NEXUS JAVASCRIPT
 ======================================== */
 
+/* CHECK AUTH STATUS & ROUTE PROTECTION */
+function checkUserAuth() {
+    const user = localStorage.getItem("vmcUser");
+    const isAuthPage = window.location.pathname.endsWith("login.html") || window.location.pathname.endsWith("register.html");
+
+    // 1. If NOT logged in and NOT on login/register page -> Redirect to Login
+    if (!user && !isAuthPage) {
+        window.location.href = "login.html";
+        return;
+    }
+
+    // 2. If ALREADY logged in and trying to access login/register -> Redirect to Home
+    if (user && isAuthPage) {
+        window.location.href = "index.html";
+        return;
+    }
+
+    // 3. Update Navbar Login/Logout button dynamically
+    if (user) {
+        const navLoginBtn = document.querySelector(".navbar nav .login-btn");
+        if (navLoginBtn) {
+            navLoginBtn.outerHTML = `<button onclick="logout()" class="logout-btn">Logout</button>`;
+        }
+
+        // Pre-fill user names in forms if available
+        const studentNameInput = document.getElementById("studentName");
+        if (studentNameInput) studentNameInput.value = user;
+
+        const wallNameInput = document.getElementById("wallName");
+        if (wallNameInput) wallNameInput.value = user;
+    }
+}
+
+/* LOGIN */
+function login(event) {
+    if (event) event.preventDefault();
+
+    const emailInput = document.getElementById("email");
+    const passwordInput = document.getElementById("password");
+    const message = document.getElementById("login-message");
+
+    if (!emailInput || !passwordInput) return false;
+
+    const email = emailInput.value.trim().toLowerCase();
+    const password = passwordInput.value.trim();
+
+    /* EMAIL FORMAT VALIDATION (@vmc.com) */
+    if (!email.includes("@vmc.com")) {
+        if (message) {
+            message.style.color = "#f44336";
+            message.innerHTML = "Email must contain @vmc.com (e.g., bhet@vmc.com)";
+        }
+        return false;
+    }
+
+    /* DEFAULT ADMIN ACCOUNT */
+    if (email === "admin@vmc.com" && password === "admin123") {
+        localStorage.setItem("vmcUser", "Administrator");
+        window.location.href = "index.html";
+        return false;
+    }
+
+    /* CHECK REGISTERED ACCOUNTS IN LOCALSTORAGE */
+    let users = JSON.parse(localStorage.getItem("vmcRegisteredUsers")) || [];
+    const foundUser = users.find(u => u.email === email && u.password === password);
+
+    if (foundUser) {
+        localStorage.setItem("vmcUser", foundUser.name);
+        window.location.href = "index.html";
+        return false;
+    }
+
+    /* DEFAULT STUDENT ACCOUNT OR ANY REGISTERED USER */
+    if (password === "12345" || password.length > 0) {
+        const userName = email.split("@")[0];
+        const formattedName = userName.charAt(0).toUpperCase() + userName.slice(1);
+        localStorage.setItem("vmcUser", formattedName);
+        window.location.href = "index.html";
+        return false;
+    }
+
+    /* INVALID CREDENTIALS */
+    if (message) {
+        message.style.color = "#f44336";
+        message.innerHTML = "Invalid email or password.";
+    }
+    return false;
+}
+
 /* REGISTER ACCOUNT */
 function register(event) {
     if (event) event.preventDefault();
@@ -11,7 +100,7 @@ function register(event) {
     const passwordInput = document.getElementById("regPassword");
     const message = document.getElementById("register-message");
 
-    if (!nameInput || !emailInput || !passwordInput) return;
+    if (!nameInput || !emailInput || !passwordInput) return false;
 
     const name = nameInput.value.trim();
     const email = emailInput.value.trim().toLowerCase();
@@ -43,7 +132,7 @@ function register(event) {
     users.push(newUser);
     localStorage.setItem("vmcRegisteredUsers", JSON.stringify(users));
 
-    /* SET LOGGED-IN SESSION */
+    /* SET LOGGED-IN SESSION & REDIRECT TO HOMEPAGE */
     localStorage.setItem("vmcUser", name);
 
     if (message) {
@@ -51,65 +140,20 @@ function register(event) {
         message.innerHTML = "Registration successful! Redirecting...";
     }
 
-    /* REDIRECT TO HOME PAGE */
-    window.location.href = "index.html";
+    setTimeout(() => {
+        window.location.href = "index.html";
+    }, 1000);
+
     return false;
 }
 
-/* LOGIN */
-function login(event) {
-    if (event) event.preventDefault();
-
-    const emailInput = document.getElementById("email");
-    const passwordInput = document.getElementById("password");
-    const message = document.getElementById("login-message");
-
-    if (!emailInput || !passwordInput) return;
-
-    const email = emailInput.value.trim().toLowerCase();
-    const password = passwordInput.value.trim();
-
-    /* EMAIL FORMAT VALIDATION (@vmc.com) */
-    if (!email.includes("@vmc.com")) {
-        if (message) {
-            message.style.color = "#f44336";
-            message.innerHTML = "Email must contain @vmc.com (e.g., bhet@vmc.com)";
-        }
-        return false;
+/* LOGOUT WITH CONFIRMATION PROMPT */
+function logout() {
+    const confirmLogout = confirm("Are you sure you want to log out?");
+    if (confirmLogout) {
+        localStorage.removeItem("vmcUser");
+        window.location.href = "login.html";
     }
-
-    /* DEFAULT ADMIN ACCOUNT */
-    if (email === "admin@vmc.com" && password === "admin123") {
-        localStorage.setItem("vmcUser", "Administrator");
-        window.location.href = "index.html";
-        return false;
-    }
-
-    /* CHECK REGISTERED ACCOUNTS IN LOCALSTORAGE */
-    let users = JSON.parse(localStorage.getItem("vmcRegisteredUsers")) || [];
-    const foundUser = users.find(u => u.email === email && u.password === password);
-
-    if (foundUser) {
-        localStorage.setItem("vmcUser", foundUser.name);
-        window.location.href = "index.html";
-        return false;
-    }
-
-    /* DEFAULT STUDENT ACCOUNT OR ANY REGISTERED USER WITH MATCHING CREDS */
-    if (password === "12345" || password.length > 0) {
-        const userName = email.split("@")[0];
-        const formattedName = userName.charAt(0).toUpperCase() + userName.slice(1);
-        localStorage.setItem("vmcUser", formattedName);
-        window.location.href = "index.html";
-        return false;
-    }
-
-    /* INVALID CREDENTIALS */
-    if (message) {
-        message.style.color = "#f44336";
-        message.innerHTML = "Invalid email or password.";
-    }
-    return false;
 }
 
 /* SHOW / HIDE PASSWORD - LOGIN */
@@ -139,32 +183,6 @@ function showRegPassword() {
     } else {
         password.type = "password";
         button.innerHTML = "SHOW";
-    }
-}
-
-/* LOGOUT */
-function logout() {
-    localStorage.removeItem("vmcUser");
-    window.location.href = "index.html";
-}
-
-/* CHECK AUTH STATUS & UPDATE NAVBAR ONLY */
-function checkUserAuth() {
-    const user = localStorage.getItem("vmcUser");
-
-    if (user) {
-        /* UPDATE ONLY THE NAVBAR LOGIN BUTTON TO A CLEAN LOGOUT BUTTON */
-        const navLoginBtn = document.querySelector(".navbar nav .login-btn");
-        if (navLoginBtn) {
-            navLoginBtn.outerHTML = `<button onclick="logout()" class="logout-btn">Logout</button>`;
-        }
-
-        /* PRE-FILL USERNAME IN FORMS */
-        const studentNameInput = document.getElementById("studentName");
-        if (studentNameInput) studentNameInput.value = user;
-
-        const wallNameInput = document.getElementById("wallName");
-        if (wallNameInput) wallNameInput.value = user;
     }
 }
 
@@ -208,7 +226,7 @@ function displayConcerns() {
     let concerns = JSON.parse(localStorage.getItem("concerns")) || [];
 
     if (concerns.length === 0) {
-        list.innerHTML = "<p>No concerns submitted yet.</p>";
+        list.innerHTML = "<p style='color:#64748b;'>No concerns submitted yet.</p>";
         return;
     }
 
@@ -268,7 +286,7 @@ function displayWallPosts() {
     let posts = JSON.parse(localStorage.getItem("wallPosts")) || [];
 
     if (posts.length === 0) {
-        container.innerHTML = "<p>No messages yet.</p>";
+        container.innerHTML = "<p style='color:#64748b;'>No messages yet.</p>";
         return;
     }
 
@@ -309,7 +327,7 @@ function showScholarship(name) {
     );
 }
 
-/* PAGE LOAD */
+/* PAGE LOAD AUTHENTICATION CHECK */
 document.addEventListener("DOMContentLoaded", function () {
     checkUserAuth();
     displayConcerns();
