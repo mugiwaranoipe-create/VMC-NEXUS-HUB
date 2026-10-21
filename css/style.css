@@ -97,12 +97,20 @@ body {
 }
 
 .hero-content {
-    max-width: 800px;
+    max-width: 750px;
     margin: 0 auto;
     text-align: center;
     display: flex;
     flex-direction: column;
     align-items: center;
+}
+
+.hero-content p:not(.small-title) {
+    color: #94a3b8;
+    font-size: 16px;
+    line-height: 1.6;
+    max-width: 650px;
+    margin: 0 auto;
 }
 
 .home-logo {
@@ -140,42 +148,39 @@ body {
     margin-bottom: 15px;
 }
 
-.hero-desc {
-    max-width: 650px;
-    margin: 0 auto;
-    color: #64748b;
-    font-size: 15px;
-    line-height: 1.6;
-}
-
-/* FEATURE CARDS */
-.features {
+/* FEATURE CARDS & GRIDS */
+.features, .service-grid, .book-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: 20px;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 25px;
     max-width: 1100px;
-    margin: 40px auto 60px;
+    margin: 40px auto;
     padding: 0 20px;
     width: 100%;
+    justify-content: center;
 }
 
 .feature-card-link {
     text-decoration: none !important;
     color: inherit !important;
     display: block;
+    height: 100%;
 }
 
-.feature-card {
+.feature-card, .service-card, .book-card {
     background: #081120;
     border: 1px solid rgba(255, 255, 255, 0.05);
     border-radius: 12px;
     padding: 30px 20px;
     text-align: center;
     height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
     transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
-.feature-card:hover {
+.feature-card:hover, .service-card:hover, .book-card:hover {
     transform: translateY(-5px);
     border-color: rgba(77, 163, 255, 0.3);
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
@@ -222,8 +227,8 @@ body {
     font-size: 15px;
 }
 
-/* SUBPAGE CARDS, FORMS, & GRIDS */
-.form-card, .announcement-card, .service-card, .book-card, .wall-post {
+/* SUBPAGE CARDS & FORMS */
+.form-card, .announcement-card, .wall-post {
     background: #081120;
     border: 1px solid rgba(255, 255, 255, 0.05);
     border-radius: 10px;
@@ -291,12 +296,6 @@ body {
 
 .main-btn:hover {
     background-color: #1d4ed8;
-}
-
-.service-grid, .book-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 20px;
 }
 
 .wall-post {
@@ -392,10 +391,6 @@ body.login-page {
     margin-bottom: 25px;
 }
 
-.form-group {
-    margin-bottom: 18px;
-}
-
 .login-box label {
     display: block;
     font-size: 13px;
@@ -456,18 +451,6 @@ body.login-page {
 
 .login-button:hover {
     background: #1d4ed8;
-}
-
-.register-text {
-    margin-top: 20px;
-    font-size: 14px;
-    color: #94a3b8;
-}
-
-.register-text a {
-    color: #4da3ff;
-    text-decoration: none;
-    font-weight: bold;
 }
 
 .back-link {
