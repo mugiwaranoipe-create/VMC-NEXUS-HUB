@@ -1,5 +1,5 @@
 /* ========================================
-   VMC NEXUS MAIN STYLESHEET (FIXED & POLISHED)
+   VMC NEXUS MAIN STYLESHEET (FULL FIXED)
 ======================================== */
 
 * {
@@ -18,17 +18,24 @@ body {
     flex-direction: column;
 }
 
-/* NAVBAR */
+/* NAVBAR ALIGNMENT FIX */
 .navbar {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 15px 50px;
+    padding: 15px 40px;
     background-color: #060e1a;
     border-bottom: 1px solid rgba(255, 255, 255, 0.08);
     position: sticky;
     top: 0;
     z-index: 1000;
+    width: 100%;
+}
+
+.navbar-logo {
+    display: flex;
+    align-items: center;
+    flex: 1;
 }
 
 .navbar-logo img {
@@ -40,20 +47,29 @@ body {
 .navbar nav {
     display: flex;
     align-items: center;
-    gap: 25px;
+    justify-content: center;
+    gap: 20px;
+    flex: 2;
 }
 
 .navbar nav a {
     color: #94a3b8;
     text-decoration: none;
-    font-size: 15px;
+    font-size: 14px;
     font-weight: 500;
+    white-space: nowrap;
     transition: color 0.3s ease;
 }
 
 .navbar nav a:hover,
 .navbar nav a.active {
     color: #4da3ff;
+}
+
+/* RIGHT-ALIGNED LOGIN / LOGOUT BUTTON */
+.navbar nav .login-btn,
+.navbar nav .logout-btn {
+    margin-left: auto;
 }
 
 .login-btn {
@@ -148,16 +164,16 @@ body {
     margin-bottom: 15px;
 }
 
-/* FEATURE CARDS & GRIDS */
+/* GRIDS & CARDS (HOME, SCHOLARSHIP, LIBRARY) */
 .features, .service-grid, .book-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
     gap: 25px;
     max-width: 1100px;
-    margin: 40px auto;
+    margin: 30px auto 50px;
     padding: 0 20px;
     width: 100%;
-    justify-content: center;
+    align-items: stretch;
 }
 
 .feature-card-link {
@@ -186,25 +202,27 @@ body {
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
 }
 
-.feature-card .icon {
+.feature-card .icon, .service-card span {
     font-size: 36px;
     margin-bottom: 15px;
+    display: block;
 }
 
-.feature-card h3 {
+.feature-card h3, .service-card h3, .book-card h3 {
     color: #ffffff !important;
     font-size: 18px;
     margin-bottom: 10px;
 }
 
-.feature-card p {
+.feature-card p, .service-card p, .book-card p {
     color: #64748b !important;
     font-size: 13px;
+    margin-bottom: 15px;
 }
 
-/* SUBPAGE CONTAINER & HEADERS */
+/* SUBPAGE CONTAINERS & FORMS */
 .page-container {
-    max-width: 1000px;
+    max-width: 900px;
     margin: 40px auto;
     padding: 0 20px;
     flex: 1;
@@ -213,7 +231,7 @@ body {
 
 .page-header {
     text-align: center;
-    margin-bottom: 40px;
+    margin-bottom: 35px;
 }
 
 .page-header h1 {
@@ -227,16 +245,16 @@ body {
     font-size: 15px;
 }
 
-/* SUBPAGE CARDS & FORMS */
-.form-card, .announcement-card, .wall-post {
+.form-card, .announcement-card, .wall-container, .wall-post {
     background: #081120;
     border: 1px solid rgba(255, 255, 255, 0.05);
     border-radius: 10px;
     padding: 25px;
     margin-bottom: 25px;
+    width: 100%;
 }
 
-.announcement-card h2, .service-card h3, .book-card h3 {
+.announcement-card h2 {
     color: #4da3ff;
     margin-bottom: 10px;
 }
@@ -279,6 +297,7 @@ body {
 
 .search-box {
     margin-bottom: 30px;
+    width: 100%;
 }
 
 .main-btn {
@@ -477,7 +496,7 @@ footer {
 }
 
 /* RESPONSIVE DESIGN */
-@media (max-width: 768px) {
+@media (max-width: 900px) {
     .navbar {
         flex-direction: column;
         gap: 15px;
@@ -487,7 +506,12 @@ footer {
     .navbar nav {
         flex-wrap: wrap;
         justify-content: center;
-        gap: 15px;
+        gap: 12px;
+    }
+
+    .navbar nav .login-btn,
+    .navbar nav .logout-btn {
+        margin-left: 0;
     }
 
     .login-container {
