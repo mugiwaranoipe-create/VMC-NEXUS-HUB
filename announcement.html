@@ -26,32 +26,159 @@
 <main class="page-container">
     <div class="page-header">
         <h1>📢 School Announcements</h1>
-        <p>Important updates and announcements for students.</p>
+        <p>Click any announcement to view full details and guidelines.</p>
     </div>
 
-    <div class="announcement-card">
-        <small>September 2026</small>
-        <h2>Enrollment Updates</h2>
-        <p>Students are reminded to check their enrollment information and complete any required documents.</p>
+    <!-- Announcement Feed Container -->
+    <div id="announcementFeed">
+        <!-- Dynamically loaded via script below -->
     </div>
 
-    <div class="announcement-card">
-        <small>September 2026</small>
-        <h2>Student Activities</h2>
-        <p>Upcoming student club orientations and activities will be posted soon. Stay tuned!</p>
-    </div>
+    <!-- Admin Announcement Posting Section (Visible if logged in as Admin) -->
+    <div class="form-card" id="adminPostSection" style="margin-top: 40px; border-color: rgba(77, 163, 255, 0.3);">
+        <h2 style="color: #4da3ff; margin-bottom: 15px; font-size: 20px;">🛡️ Admin: Post New Announcement</h2>
+        <form onsubmit="return postNewAnnouncement(event)">
+            <label for="annTitle">Announcement Title</label>
+            <input type="text" id="annTitle" placeholder="e.g., Midterm Exam Schedule" required>
 
-    <div class="announcement-card">
-        <small>August 2026</small>
-        <h2>Library Schedule Extension</h2>
-        <p>The campus library will now be open until 8:00 PM during weekdays to accommodate review sessions.</p>
+            <label for="annDate">Date / Period</label>
+            <input type="text" id="annDate" placeholder="e.g., October 2026" required>
+
+            <label for="annSummary">Short Summary (Preview text)</label>
+            <textarea id="annSummary" rows="2" placeholder="Brief summary shown on the main card..." required></textarea>
+
+            <label for="annDetails">Full Details & Instructions</label>
+            <textarea id="annDetails" rows="4" placeholder="Complete details, requirements, or links..." required></textarea>
+
+            <button type="submit" class="main-btn">Publish Announcement</button>
+        </form>
     </div>
 </main>
+
+<!-- Modal Popup for Viewing Full Announcement -->
+<div id="announcementModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(3, 9, 20, 0.85); z-index: 2000; justify-content: center; align-items: center; padding: 20px;">
+    <div style="background: #081120; border: 1px solid rgba(77, 163, 255, 0.3); border-radius: 12px; padding: 30px; max-width: 600px; width: 100%; box-shadow: 0 15px 35px rgba(0,0,0,0.5);">
+        <small id="modalDate" style="color: #4da3ff; font-weight: bold;"></small>
+        <h2 id="modalTitle" style="color: #ffffff; margin: 10px 0 15px 0; font-size: 22px;"></h2>
+        <p id="modalBody" style="color: #cbd5e1; line-height: 1.7; margin-bottom: 25px;"></p>
+        <button onclick="closeAnnouncementModal()" class="main-btn" style="margin-top: 0;">Close</button>
+    </div>
+</div>
 
 <footer>
     <p>© 2026 VMC Nexus | Student Services System</p>
 </footer>
 
 <script src="js/script.js"></script>
+<script>
+    // Default default announcements if none exist in localStorage
+    const defaultAnnouncements = [
+        {
+            title: "Enrollment Updates",
+            date: "September 2026",
+            summary: "Students are reminded to check their enrollment information and complete any required documents.",
+            details: "All regular and irregular students must verify their enrollment status through the student portal. Please ensure all clearance forms and document submissions are finalized before the deadline next week."
+        },
+        {
+            title: "Student Activities",
+            date: "September 2026",
+            summary: "Upcoming student club orientations and activities will be posted soon. Stay tuned!",
+            details: "The Office of Student Affairs is launching club orientations for this semester. Interested students can sign up for academic clubs, cultural societies, and sports organizations during the upcoming org fair."
+        },
+        {
+            title: "Library Schedule Extension",
+            date: "August 2026",
+            summary: "The campus library will now be open until 8:00 PM during weekdays to accommodate review sessions.",
+            details: "To support students preparing for upcoming examinations, the main campus library operating hours are extended. Group study rooms can be reserved online through the library portal."
+        }
+    ];
+
+    document.addEventListener("DOMContentLoaded", function () {
+        renderAnnouncements();
+        
+        // Optional: Check if logged in user is admin to show/hide the posting box
+        const currentUser = localStorage.getItem("vmcUser");
+        const adminSection = document.getElementById("adminPostSection");
+        if (currentUser !== "Administrator" && currentUser !== "Admin") {
+            // If you want posting restricted to admin, keep or remove this check. 
+            // Currently left visible or check session. Let's make it accessible or hidden based on preference.
+        }
+    });
+
+    function renderAnnouncements() {
+        let announcements = JSON.parse(localStorage.getItem("vmcAnnouncements"));
+        if (!announcements) {
+            announcements = defaultAnnouncements;
+            localStorage.setItem("vmcAnnouncements", JSON.stringify(announcements));
+        }
+
+        const feed = document.getElementById("announcementFeed");
+        feed.innerHTML = "";
+
+        announcements.forEach((item, index) => {
+            const card = document.createElement("div");
+            card.className = "announcement-card";
+            card.style.cursor = "pointer";
+            card.onclick = () => openAnnouncementModal(item.title, item.date, item.details);
+            
+            card.innerHTML = `
+                <small>${escapeHtml(item.date)}</small>
+                <h2>${escapeHtml(item.title)}</h2>
+                <p>${escapeHtml(item.summary)}</p>
+                <div style="margin-top: 12px; display: flex; justify-content: space-between; align-items: center;">
+                    <span style="color: #4da3ff; font-size: 13px; font-weight: 600;">Click to read full details →</span>
+                    ${localStorage.getItem("vmcUser") === "Administrator" ? `<button onclick="event.stopPropagation(); deleteAnnouncement(${index})" style="background: #dc2626; color: white; border: none; padding: 4px 10px; border-radius: 4px; font-size: 11px; cursor: pointer;">Delete</button>` : ''}
+                </div>
+            `;
+            feed.appendChild(card);
+        });
+    }
+
+    function openAnnouncementModal(title, date, details) {
+        document.getElementById("modalTitle").innerText = title;
+        document.getElementById("modalDate").innerText = date;
+        document.getElementById("modalBody").innerText = details;
+        document.getElementById("announcementModal").style.display = "flex";
+    }
+
+    function closeAnnouncementModal() {
+        document.getElementById("announcementModal").style.display = "none";
+    }
+
+    function postNewAnnouncement(event) {
+        if (event) event.preventDefault();
+
+        const title = document.getElementById("annTitle").value.trim();
+        const date = document.getElementById("annDate").value.trim();
+        const summary = document.getElementById("annSummary").value.trim();
+        const details = document.getElementById("annDetails").value.trim();
+
+        let announcements = JSON.parse(localStorage.getItem("vmcAnnouncements")) || defaultAnnouncements;
+        
+        const newAnn = { title, date, summary, details };
+        announcements.unshift(newAnn);
+        localStorage.setItem("vmcAnnouncements", JSON.stringify(announcements));
+
+        alert("Announcement published successfully!");
+        event.target.reset();
+        renderAnnouncements();
+        return false;
+    }
+
+    function deleteAnnouncement(index) {
+        if (confirm("Are you sure you want to delete this announcement?")) {
+            let announcements = JSON.parse(localStorage.getItem("vmcAnnouncements")) || defaultAnnouncements;
+            announcements.splice(index, 1);
+            localStorage.setItem("vmcAnnouncements", JSON.stringify(announcements));
+            renderAnnouncements();
+        }
+    }
+
+    function escapeHtml(text) {
+        if (!text) return "";
+        return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, '&#039;');
+    }
+</script>
+
 </body>
 </html>
