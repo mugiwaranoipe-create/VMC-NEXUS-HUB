@@ -3,102 +3,498 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Announcements - VMC Nexus</title>
-    <link rel="stylesheet" href="css/style.css">
+    <title>School Announcements - VMC Nexus</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        navy: {
+                            900: '#030914',
+                            800: '#060e1a',
+                            700: '#081120',
+                            600: '#0d1d36',
+                            500: '#1e293b'
+                        },
+                        brand: {
+                            blue: '#2563eb',
+                            hover: '#1d4ed8',
+                            light: '#4da3ff'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
     <style>
-        .announcement-card {
-            cursor: pointer;
-            transition: transform 0.2s ease, border-color 0.2s ease;
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #030914;
+            color: #e2e8f0;
         }
-        .announcement-card:hover {
-            transform: translateY(-3px);
-            border-color: rgba(77, 163, 255, 0.4);
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
         }
-        /* MODAL POPUP STYLES */
-        .modal-overlay {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(3, 9, 20, 0.85);
-            backdrop-filter: blur(4px);
-            z-index: 2000;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
+        ::-webkit-scrollbar-track {
+            background: #030914;
         }
-        .modal-content {
-            background: #081120;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 12px;
-            padding: 30px;
-            max-width: 600px;
-            width: 100%;
-            position: relative;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+        ::-webkit-scrollbar-thumb {
+            background: #1e293b;
+            border-radius: 4px;
         }
-        .close-modal {
-            position: absolute;
-            top: 15px;
-            right: 20px;
-            background: none;
-            border: none;
-            color: #94a3b8;
-            font-size: 24px;
-            font-weight: bold;
-            cursor: pointer;
-        }
-        .close-modal:hover {
-            color: #ffffff;
+        ::-webkit-scrollbar-thumb:hover {
+            background: #2563eb;
         }
     </style>
 </head>
-<body>
+<body class="min-h-screen flex flex-col justify-between">
 
-<header class="navbar">
-    <a href="index.html" class="navbar-logo">
-        <img src="./image/navi-barlogo1.jpg" alt="VMC Nexus Navbar Logo">
-    </a>
-    <nav>
-        <a href="index.html">Home</a>
-        <a href="announcement.html" class="active">Announcements</a>
-        <a href="concerns.html">Concerns</a>
-        <a href="scholarship.html">Scholarship</a>
-        <a href="library.html">Library</a>
-        <a href="freedom.html">Freedom Wall</a>
-        <a href="login.html" class="login-btn">Login</a>
-    </nav>
-</header>
+    <!-- NAVBAR -->
+    <header class="bg-navy-800 border-b border-white/10 sticky top-0 z-40">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <!-- Logo & Title -->
+                <div class="flex items-center space-x-3">
+                    <a href="index.html" class="flex items-center space-x-3">
+                        <div class="w-10 h-10 rounded-full bg-brand-blue flex items-center justify-center font-bold text-white text-lg shadow-lg shadow-blue-500/30">
+                            VMC
+                        </div>
+                        <span class="font-bold text-lg tracking-wide text-white hidden sm:inline">VMC NEXUS</span>
+                    </a>
+                </div>
 
-<main class="page-container">
-    <div class="page-header">
-        <h1>📢 School Announcements</h1>
-        <p>Click any announcement below to view complete details.</p>
+                <!-- Navigation Links -->
+                <nav class="hidden md:flex space-x-6">
+                    <a href="index.html" class="text-slate-400 hover:text-brand-light transition text-sm font-medium">Home</a>
+                    <a href="#" class="text-brand-light font-semibold text-sm border-b-2 border-brand-light pb-1">Announcements</a>
+                    <a href="concerns.html" class="text-slate-400 hover:text-brand-light transition text-sm font-medium">Concerns</a>
+                    <a href="scholarship.html" class="text-slate-400 hover:text-brand-light transition text-sm font-medium">Scholarship</a>
+                    <a href="library.html" class="text-slate-400 hover:text-brand-light transition text-sm font-medium">Library</a>
+                    <a href="freedom.html" class="text-slate-400 hover:text-brand-light transition text-sm font-medium">Freedom Wall</a>
+                </nav>
+
+                <!-- Actions -->
+                <div class="flex items-center space-x-3">
+                    <button onclick="toggleAdminPanel()" class="bg-navy-700 hover:bg-navy-600 text-brand-light border border-brand-light/30 text-xs px-3 py-2 rounded-lg font-medium transition flex items-center space-x-1 shadow-sm">
+                        <span>🛡️</span>
+                        <span id="adminToggleText">Admin Mode</span>
+                    </button>
+                    <a href="login.html" class="bg-brand-blue hover:bg-brand-hover text-white text-xs sm:text-sm px-4 py-2 rounded-lg font-semibold transition shadow-md shadow-blue-600/20">
+                        Login
+                    </a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- MAIN CONTENT CONTAINER -->
+    <main class="max-w-4xl mx-auto px-4 sm:px-6 py-8 w-full flex-grow">
+        
+        <!-- PAGE HEADER -->
+        <div class="text-center mb-8">
+            <h1 class="text-3xl sm:text-4xl font-extrabold text-white tracking-tight mb-2">
+                📢 School Announcements
+            </h1>
+            <p class="text-slate-400 text-sm sm:text-base">
+                Click on any announcement below to read complete guidelines and updates.
+            </p>
+        </div>
+
+        <!-- ADMIN POSTING CONTAINER (Hidden by default, toggled via Admin button) -->
+        <section id="adminPostingForm" class="hidden mb-8 bg-navy-700 border border-brand-light/20 rounded-xl p-6 shadow-2xl transition-all">
+            <div class="flex items-center justify-between mb-4 border-b border-slate-700/50 pb-3">
+                <h2 class="text-lg font-bold text-brand-light flex items-center gap-2">
+                    <span>✏️</span> Create New Announcement
+                </h2>
+                <span class="text-xs bg-brand-blue/20 text-brand-light border border-brand-blue/30 px-2.5 py-1 rounded-full font-semibold">Admin Panel</span>
+            </div>
+            
+            <form id="announcementForm" onsubmit="handlePostAnnouncement(event)" class="space-y-4">
+                <div>
+                    <label for="postTitle" class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1">Announcement Title</label>
+                    <input type="text" id="postTitle" required placeholder="e.g. Midterm Examination Schedule" class="w-full bg-navy-900 border border-slate-700 rounded-lg px-4 py-2.5 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-brand-blue transition">
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label for="postCategory" class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1">Category</label>
+                        <select id="postCategory" required class="w-full bg-navy-900 border border-slate-700 rounded-lg px-4 py-2.5 text-sm text-white focus:outline-none focus:border-brand-blue transition">
+                            <option value="Academic">Academic</option>
+                            <option value="Activities">Student Activities</option>
+                            <option value="Facilities">Campus & Facilities</option>
+                            <option value="Urgent">Urgent Notice</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label for="postDate" class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1">Date</label>
+                        <input type="date" id="postDate" required class="w-full bg-navy-900 border border-slate-700 rounded-lg px-4 py-2.5 text-sm text-white focus:outline-none focus:border-brand-blue transition">
+                    </div>
+                </div>
+
+                <div>
+                    <label for="postSummary" class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1">Short Preview Summary</label>
+                    <input type="text" id="postSummary" required placeholder="Brief one-sentence description for the feed preview..." class="w-full bg-navy-900 border border-slate-700 rounded-lg px-4 py-2.5 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-brand-blue transition">
+                </div>
+
+                <div>
+                    <label for="postContent" class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1">Full Announcement Content</label>
+                    <textarea id="postContent" rows="5" required placeholder="Enter full details, guidelines, steps, or important dates..." class="w-full bg-navy-900 border border-slate-700 rounded-lg px-4 py-2.5 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-brand-blue transition"></textarea>
+                </div>
+
+                <div class="flex justify-end space-x-3 pt-2">
+                    <button type="button" onclick="toggleAdminPanel()" class="px-4 py-2 rounded-lg bg-slate-800 text-slate-300 hover:bg-slate-700 text-xs font-semibold transition">
+                        Cancel
+                    </button>
+                    <button type="submit" class="px-5 py-2 rounded-lg bg-brand-blue hover:bg-brand-hover text-white text-xs font-bold transition shadow-lg shadow-blue-600/30">
+                        Publish Announcement
+                    </button>
+                </div>
+            </form>
+        </section>
+
+        <!-- FILTER & SEARCH BAR -->
+        <div class="flex flex-col sm:flex-row items-center justify-between gap-4 mb-6 bg-navy-800 p-4 rounded-xl border border-white/5">
+            <div class="relative w-full sm:w-72">
+                <input type="text" id="searchQuery" onkeyup="filterAnnouncements()" placeholder="Search announcements..." class="w-full bg-navy-900 border border-slate-700 rounded-lg pl-9 pr-4 py-2 text-xs sm:text-sm text-white placeholder-slate-500 focus:outline-none focus:border-brand-blue transition">
+                <span class="absolute left-3 top-2.5 text-slate-500 text-xs">🔍</span>
+            </div>
+
+            <div class="flex items-center space-x-2 w-full sm:w-auto overflow-x-auto pb-1 sm:pb-0">
+                <button onclick="setCategoryFilter('ALL')" id="filter-ALL" class="filter-btn text-xs px-3 py-1.5 rounded-lg font-medium bg-brand-blue text-white transition">
+                    All
+                </button>
+                <button onclick="setCategoryFilter('Academic')" id="filter-Academic" class="filter-btn text-xs px-3 py-1.5 rounded-lg font-medium bg-navy-700 text-slate-400 hover:text-white transition">
+                    Academic
+                </button>
+                <button onclick="setCategoryFilter('Activities')" id="filter-Activities" class="filter-btn text-xs px-3 py-1.5 rounded-lg font-medium bg-navy-700 text-slate-400 hover:text-white transition">
+                    Activities
+                </button>
+                <button onclick="setCategoryFilter('Facilities')" id="filter-Facilities" class="filter-btn text-xs px-3 py-1.5 rounded-lg font-medium bg-navy-700 text-slate-400 hover:text-white transition">
+                    Facilities
+                </button>
+            </div>
+        </div>
+
+        <!-- ANNOUNCEMENT FEED LIST -->
+        <div id="announcementsContainer" class="space-y-4">
+            <!-- Dynamic Cards Loaded Here -->
+        </div>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="bg-navy-800 border-t border-white/5 py-6 text-center text-xs text-slate-500">
+        <p>© 2026 VMC Nexus | Student Services System</p>
+    </footer>
+
+    <!-- INTERACTIVE READ MODAL -->
+    <div id="announcementModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-navy-700 border border-slate-700 rounded-2xl max-w-2xl w-full max-h-[90vh] flex flex-col shadow-2xl overflow-hidden transform transition-all scale-95 opacity-0 duration-200" id="modalBox">
+            
+            <!-- Modal Header -->
+            <div class="p-6 border-b border-slate-700/60 flex items-start justify-between bg-navy-800">
+                <div>
+                    <div class="flex items-center space-x-2 mb-2">
+                        <span id="modalCategory" class="px-2.5 py-0.5 rounded-full text-[11px] font-bold uppercase tracking-wider bg-brand-blue/20 text-brand-light border border-brand-blue/30">
+                            Category
+                        </span>
+                        <span id="modalDate" class="text-xs text-slate-400">Date</span>
+                    </div>
+                    <h2 id="modalTitle" class="text-xl sm:text-2xl font-bold text-white leading-snug">
+                        Announcement Title
+                    </h2>
+                </div>
+                <button onclick="closeModal()" class="text-slate-400 hover:text-white text-xl font-bold p-1 rounded-lg hover:bg-slate-800 transition">
+                    ✕
+                </button>
+            </div>
+
+            <!-- Modal Body -->
+            <div class="p-6 overflow-y-auto space-y-4 text-slate-300 text-sm leading-relaxed" id="modalContent">
+                <!-- Content inserted dynamically -->
+            </div>
+
+            <!-- Modal Footer -->
+            <div class="p-4 border-t border-slate-700/60 bg-navy-800 flex justify-between items-center">
+                <span class="text-xs text-slate-500">VMC Nexus Student Portal</span>
+                <button onclick="closeModal()" class="bg-brand-blue hover:bg-brand-hover text-white text-xs font-semibold px-4 py-2 rounded-lg transition">
+                    Close Detail View
+                </button>
+            </div>
+        </div>
     </div>
 
-    <!-- Container where announcements are loaded -->
-    <div id="announcementList">
-        <!-- Dynamically rendered via script.js -->
-    </div>
-</main>
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+        // Initial Default Announcements
+        const defaultAnnouncements = [
+            {
+                id: "1",
+                title: "Enrollment Updates",
+                category: "Academic",
+                date: "September 15, 2026",
+                summary: "Students are reminded to check their enrollment information and complete any required documents.",
+                content: `
+                    <p class="mb-3">Attention all regular and irregular students regarding official 1st Semester enrollment clearance and record validations:</p>
+                    <ul class="list-disc pl-5 space-y-2 mb-4">
+                        <li><strong>Deadline for Clearance:</strong> Please complete all missing requirements before September 30, 2026.</li>
+                        <li><strong>Online Portal Syncing:</strong> Double check your registered subjects in the student portal dashboard.</li>
+                        <li><strong>Document Submissions:</strong> Form 138 / Report Cards must be submitted physically to the Registrar's Office on or before the specified date.</li>
+                    </ul>
+                    <p class="p-3 bg-navy-900 border-l-4 border-brand-blue text-xs text-slate-300 rounded">Note: Failure to validate subjects may cause delays in official class roster inclusion and grading management.</p>
+                `
+            },
+            {
+                id: "2",
+                title: "Student Activities",
+                category: "Activities",
+                date: "September 10, 2026",
+                summary: "Upcoming student club orientations and activities will be posted soon. Stay tuned!",
+                content: `
+                    <p class="mb-3">Get involved in campus life! The Student Affairs Office announces the annual Organization Recruitment Week:</p>
+                    <ul class="list-disc pl-5 space-y-2 mb-4">
+                        <li><strong>Org Fair Dates:</strong> October 5 - October 9, 2026 (Main Campus Grounds).</li>
+                        <li><strong>Participating Clubs:</strong> Over 25 academic, cultural, and sports organizations will be setting up interactive booths.</li>
+                        <li><strong>Special Event:</strong> Battle of the Bands and Student Performances on Friday evening at 5:00 PM.</li>
+                    </ul>
+                    <p>Be sure to register with accredited student organizations to boost your extracurricular engagement!</p>
+                `
+            },
+            {
+                id: "3",
+                title: "Library Schedule Extension",
+                category: "Facilities",
+                date: "August 28, 2026",
+                summary: "The campus library will now be open until 8:00 PM during weekdays to accommodate review sessions.",
+                content: `
+                    <p class="mb-3">To support upcoming exam preparations and research projects, the VMC Main Library is extending its operating hours:</p>
+                    <ul class="list-disc pl-5 space-y-2 mb-4">
+                        <li><strong>Monday - Friday:</strong> 7:30 AM to 8:00 PM</li>
+                        <li><strong>Saturday:</strong> 8:00 AM to 5:00 PM</li>
+                        <li><strong>Night Study Rooms:</strong> Discussion rooms are available for reservation online via the Library tab.</li>
+                    </ul>
+                    <p>Please remember to maintain quiet behavior and follow proper health and safety protocols inside the premises.</p>
+                `
+            }
+        ];
 
-<!-- ANNOUNCEMENT DETAILS MODAL -->
-<div class="modal-overlay" id="announcementModal">
-    <div class="modal-content">
-        <button class="close-modal" onclick="closeAnnouncementModal()">&times;</button>
-        <small id="modalDate" style="color: #64748b; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; display: block; margin-bottom: 8px;"></small>
-        <h2 id="modalTitle" style="color: #4da3ff; margin-bottom: 15px; font-size: 22px;"></h2>
-        <div id="modalBody" style="color: #cbd5e1; font-size: 15px; line-height: 1.7; white-space: pre-line;"></div>
-        <button class="main-btn" onclick="closeAnnouncementModal()" style="margin-top: 25px;">Close</button>
-    </div>
-</div>
+        let announcements = [];
+        let currentFilter = 'ALL';
+        let isAdminMode = false;
 
-<footer>
-    <p>© 2026 VMC Nexus | Student Services System</p>
-</footer>
+        // Initialize App
+        document.addEventListener("DOMContentLoaded", function() {
+            loadAnnouncements();
+            // Default date picker to today
+            document.getElementById('postDate').valueAsDate = new Date();
+        });
 
-<script src="js/script.js"></script>
+        // Load Announcements from LocalStorage or Defaults
+        function loadAnnouncements() {
+            const stored = localStorage.getItem("vmc_announcements");
+            if (stored) {
+                announcements = JSON.parse(stored);
+            } else {
+                announcements = defaultAnnouncements;
+                saveToLocalStorage();
+            }
+            renderAnnouncements();
+        }
+
+        function saveToLocalStorage() {
+            localStorage.setItem("vmc_announcements", JSON.stringify(announcements));
+        }
+
+        // Render Cards to UI
+        function renderAnnouncements() {
+            const container = document.getElementById("announcementsContainer");
+            const query = document.getElementById("searchQuery").value.toLowerCase();
+
+            const filtered = announcements.filter(item => {
+                const matchesCategory = (currentFilter === 'ALL') || (item.category === currentFilter);
+                const matchesSearch = item.title.toLowerCase().includes(query) || 
+                                      item.summary.toLowerCase().includes(query) ||
+                                      item.category.toLowerCase().includes(query);
+                return matchesCategory && matchesSearch;
+            });
+
+            if (filtered.length === 0) {
+                container.innerHTML = `
+                    <div class="text-center py-12 bg-navy-800 rounded-xl border border-white/5">
+                        <span class="text-3xl block mb-2">📭</span>
+                        <p class="text-slate-400 text-sm font-medium">No announcements found matching your filter.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = filtered.map(item => `
+                <div onclick="openModal('${item.id}')" 
+                     class="announcement-card bg-navy-700 hover:bg-navy-600 border border-white/5 hover:border-brand-light/30 rounded-xl p-5 cursor-pointer transition duration-200 transform hover:-translate-y-1 shadow-lg group relative">
+                    
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="px-2.5 py-0.5 rounded-full text-[11px] font-bold uppercase tracking-wider bg-brand-blue/15 text-brand-light border border-brand-blue/20">
+                            ${escapeHtml(item.category)}
+                        </span>
+                        <span class="text-xs text-slate-400">${escapeHtml(item.date)}</span>
+                    </div>
+
+                    <h2 class="text-lg font-bold text-white group-hover:text-brand-light transition mb-1 flex items-center justify-between">
+                        <span>${escapeHtml(item.title)}</span>
+                        <span class="text-brand-light opacity-0 group-hover:opacity-100 transition text-sm">Read Details →</span>
+                    </h2>
+
+                    <p class="text-slate-400 text-xs sm:text-sm line-clamp-2">
+                        ${escapeHtml(item.summary)}
+                    </p>
+
+                    ${isAdminMode ? `
+                        <div class="mt-4 pt-3 border-t border-slate-700/50 flex justify-end space-x-2" onclick="event.stopPropagation()">
+                            <button onclick="deleteAnnouncement('${item.id}')" class="text-xs bg-red-500/20 text-red-400 border border-red-500/30 px-3 py-1 rounded hover:bg-red-500/30 transition">
+                                Delete
+                            </button>
+                        </div>
+                    ` : ''}
+                </div>
+            `).join('');
+        }
+
+        // Toggle Admin Mode
+        function toggleAdminPanel() {
+            isAdminMode = !isAdminMode;
+            const form = document.getElementById("adminPostingForm");
+            const btnText = document.getElementById("adminToggleText");
+
+            if (isAdminMode) {
+                form.classList.remove("hidden");
+                btnText.innerText = "Close Admin";
+            } else {
+                form.classList.add("hidden");
+                btnText.innerText = "Admin Mode";
+            }
+            renderAnnouncements();
+        }
+
+        // Create New Announcement
+        function handlePostAnnouncement(e) {
+            e.preventDefault();
+
+            const title = document.getElementById("postTitle").value.trim();
+            const category = document.getElementById("postCategory").value;
+            const rawDate = document.getElementById("postDate").value;
+            const summary = document.getElementById("postSummary").value.trim();
+            const contentText = document.getElementById("postContent").value.trim();
+
+            // Format date string nicely
+            const dateObj = new Date(rawDate);
+            const formattedDate = dateObj.toLocaleDateString('en-US', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            });
+
+            // Convert raw text breaks into paragraph tags for content view
+            const formattedContent = contentText.split('\n').filter(p => p.trim() !== '').map(p => `<p class="mb-3">${escapeHtml(p)}</p>`).join('');
+
+            const newPost = {
+                id: Date.now().toString(),
+                title: title,
+                category: category,
+                date: formattedDate,
+                summary: summary,
+                content: formattedContent
+            };
+
+            announcements.unshift(newPost); // Add to top
+            saveToLocalStorage();
+            renderAnnouncements();
+
+            // Reset form
+            document.getElementById("announcementForm").reset();
+            document.getElementById('postDate').valueAsDate = new Date();
+            
+            alert("Announcement published successfully!");
+        }
+
+        // Delete Announcement
+        function deleteAnnouncement(id) {
+            if (confirm("Are you sure you want to delete this announcement?")) {
+                announcements = announcements.filter(item => item.id !== id);
+                saveToLocalStorage();
+                renderAnnouncements();
+            }
+        }
+
+        // Modal Operations
+        function openModal(id) {
+            const item = announcements.find(a => a.id === id);
+            if (!item) return;
+
+            document.getElementById("modalTitle").innerText = item.title;
+            document.getElementById("modalCategory").innerText = item.category;
+            document.getElementById("modalDate").innerText = item.date;
+            document.getElementById("modalContent").innerHTML = item.content;
+
+            const modal = document.getElementById("announcementModal");
+            const modalBox = document.getElementById("modalBox");
+
+            modal.classList.remove("hidden");
+            setTimeout(() => {
+                modalBox.classList.remove("scale-95", "opacity-0");
+                modalBox.classList.add("scale-100", "opacity-100");
+            }, 10);
+        }
+
+        function closeModal() {
+            const modal = document.getElementById("announcementModal");
+            const modalBox = document.getElementById("modalBox");
+
+            modalBox.classList.remove("scale-100", "opacity-100");
+            modalBox.classList.add("scale-95", "opacity-0");
+
+            setTimeout(() => {
+                modal.classList.add("hidden");
+            }, 200);
+        }
+
+        // Filter Handlers
+        function setCategoryFilter(category) {
+            currentFilter = category;
+            
+            // Update button styles
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.classList.remove('bg-brand-blue', 'text-white');
+                btn.classList.add('bg-navy-700', 'text-slate-400');
+            });
+
+            const activeBtn = document.getElementById(`filter-${category}`);
+            if (activeBtn) {
+                activeBtn.classList.remove('bg-navy-700', 'text-slate-400');
+                activeBtn.classList.add('bg-brand-blue', 'text-white');
+            }
+
+            renderAnnouncements();
+        }
+
+        function filterAnnouncements() {
+            renderAnnouncements();
+        }
+
+        // Helper: Escape HTML
+        function escapeHtml(text) {
+            if (!text) return "";
+            return text
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+        }
+    </script>
 </body>
 </html>
