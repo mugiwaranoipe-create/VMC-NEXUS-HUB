@@ -1,58 +1,66 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Scholarship - VMC Nexus</title>
-    <link rel="stylesheet" href="css/style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scholarship - VMC Nexus</title>
+    <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 
 <header class="navbar">
-    <a href="index.html" class="navbar-logo">
-        <img src="./image/navi-barlogo1.jpg" alt="VMC Nexus Navbar Logo">
-    </a>
-    <nav>
-        <a href="index.html">Home</a>
-        <a href="announcement.html">Announcements</a>
-        <a href="concerns.html">Concerns</a>
-        <a href="scholarship.html" class="active">Scholarship</a>
-        <a href="library.html">Library</a>
-        <a href="freedom.html">Freedom Wall</a>
-        <a href="login.html" class="login-btn">Login</a>
-    </nav>
+    <a href="index.html" class="navbar-logo">
+        <img src="./image/navi-barlogo1.jpg" alt="VMC Nexus Navbar Logo">
+    </a>
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="announcement.html">Announcements</a>
+        <a href="concerns.html">Concerns</a>
+        <a href="scholarship.html" class="active">Scholarship</a>
+        <a href="library.html">Library</a>
+        <a href="freedom.html">Freedom Wall</a>
+        <a href="login.html" class="login-btn">Login</a>
+    </nav>
 </header>
 
 <main class="page-container">
-    <div class="page-header">
-        <h1>🎓 Scholarship Opportunities</h1>
-        <p>Information about scholarship opportunities for students.</p>
-    </div>
+    <div class="page-header">
+        <h1>🎓 Scholarship Opportunities</h1>
+        <p>Information about scholarship opportunities for students.</p>
+    </div>
 
-    <div class="service-grid">
-        <div class="service-card">
-            <span>🎓</span>
-            <h3>Academic Scholarship</h3>
-            <p>Scholarship opportunities for students with strong academic performance.</p>
-            <button class="main-btn" onclick="showScholarship('Academic Scholarship')">View Details</button>
-        </div>
-        <div class="service-card">
-            <span>🏆</span>
-            <h3>Student Assistance</h3>
-            <p>Financial assistance programs available to qualified students.</p>
-            <button class="main-btn" onclick="showScholarship('Student Assistance')">View Details</button>
-        </div>
-        <div class="service-card">
-            <span>📖</span>
-            <h3>Educational Grant</h3>
-            <p>Educational support for students who meet the requirements.</p>
-            <button class="main-btn" onclick="showScholarship('Educational Grant')">View Details</button>
-        </div>
-    </div>
+    <div class="service-grid">
+        <div class="service-card">
+            <div class="card-content">
+                <span>🎓</span>
+                <h3>Academic Scholarship</h3>
+                <p>Scholarship opportunities for students with strong academic performance.</p>
+            </div>
+            <button class="main-btn" onclick="showScholarship('Academic Scholarship')">View Details</button>
+        </div>
+
+        <div class="service-card">
+            <div class="card-content">
+                <span>🏆</span>
+                <h3>Student Assistance</h3>
+                <p>Financial assistance programs available to qualified students.</p>
+            </div>
+            <button class="main-btn" onclick="showScholarship('Student Assistance')">View Details</button>
+        </div>
+
+        <div class="service-card">
+            <div class="card-content">
+                <span>📖</span>
+                <h3>Educational Grant</h3>
+                <p>Educational support for students who meet the requirements.</p>
+            </div>
+            <button class="main-btn" onclick="showScholarship('Educational Grant')">View Details</button>
+        </div>
+    </div>
 </main>
 
 <footer>
-    <p>© 2026 VMC Nexus | Student Services System</p>
+    <p>© 2026 VMC Nexus | Student Services System</p>
 </footer>
 
 <script src="js/script.js"></script>
