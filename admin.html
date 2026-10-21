@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - VMC Nexus</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<header class="navbar">
+    <a href="index.html" class="navbar-logo">
+        <img src="./image/navi-barlogo1.jpg" alt="VMC Nexus Navbar Logo">
+    </a>
+    <nav>
+        <a href="index.html">Main Site</a>
+        <a href="admin.html" class="active">Admin Dashboard</a>
+        <button onclick="adminLogout()" class="logout-btn">Exit Admin</button>
+    </nav>
+</header>
+
+<main class="page-container" style="max-width: 1100px;">
+    <div class="page-header">
+        <h1>🛡️ VMC Nexus Admin Control Center</h1>
+        <p>Monitor and manage student submissions, concerns, and Freedom Wall posts in real time.</p>
+    </div>
+
+    <!-- Live Statistics Overview -->
+    <div class="features" style="margin-bottom: 30px;">
+        <div class="feature-card">
+            <h3>Total Concerns</h3>
+            <p id="statConcerns" style="font-size: 24px; color: #4da3ff; font-weight: bold; margin-top: 10px;">0</p>
+        </div>
+        <div class="feature-card">
+            <h3>Freedom Wall Posts</h3>
+            <p id="statPosts" style="font-size: 24px; color: #4da3ff; font-weight: bold; margin-top: 10px;">0</p>
+        </div>
+        <div class="feature-card">
+            <h3>Registered Users</h3>
+            <p id="statUsers" style="font-size: 24px; color: #4da3ff; font-weight: bold; margin-top: 10px;">0</p>
+        </div>
+    </div>
+
+    <!-- Section: Student Concerns Management -->
+    <div class="form-card" style="margin-bottom: 30px;">
+        <h2 style="color: #4da3ff; margin-bottom: 15px; font-size: 20px;">📝 Student Concerns Management</h2>
+        <div id="adminConcernList">
+            <!-- Dynamically populated -->
+        </div>
+    </div>
+
+    <!-- Section: Freedom Wall Moderation -->
+    <div class="form-card" style="margin-bottom: 30px;">
+        <h2 style="color: #4da3ff; margin-bottom: 15px; font-size: 20px;">💬 Freedom Wall Moderation</h2>
+        <div id="adminWallList">
+            <!-- Dynamically populated -->
+        </div>
+    </div>
+
+    <!-- Section: Registered User Accounts -->
+    <div class="form-card">
+        <h2 style="color: #4da3ff; margin-bottom: 15px; font-size: 20px;">👥 Registered User Accounts</h2>
+        <div id="adminUserList">
+            <!-- Dynamically populated -->
+        </div>
+    </div>
+</main>
+
+<footer>
+    <p>© 2026 VMC Nexus | Admin Control System</p>
+</footer>
+
+<script>
+    // Load admin data on page startup
+    document.addEventListener("DOMContentLoaded", function () {
+        loadAdminData();
+    });
+
+    function loadAdminData() {
+        // 1. Load Concerns
+        let concerns = JSON.parse(localStorage.getItem("concerns")) || [];
+        document.getElementById("statConcerns").innerText = concerns.length;
+        const concernContainer = document.getElementById("adminConcernList");
+        
+        if (concerns.length === 0) {
+            concernContainer.innerHTML = "<p style='color: #64748b;'>No concerns submitted yet.</p>";
+        } else {
+            concernContainer.innerHTML = "";
+            concerns.forEach((c, index) => {
+                const div = document.createElement("div");
+                div.style.cssText = "background: #030914; border: 1px solid #1e293b; padding: 15px; border-radius: 8px; margin-bottom: 15px;";
+                
+                let statusColor = "#f39c12"; // Pending
+                if (c.status === "In Progress") statusColor = "#3498db";
+                if (c.status === "Resolved") statusColor = "#2ecc71";
+
+                div.innerHTML = `
+                    <h3 style="color: #4da3ff; margin-bottom: 5px; font-size: 16px;">${escapeHtml(c.subject)}</h3>
+                    <p><strong>Student:</strong> ${escapeHtml(c.name)} | <strong>Category:</strong> ${escapeHtml(c.category)}</p>
+                    <p style="margin: 8px 0; color: #cbd5e1;">${escapeHtml(c.message)}</p>
+                    <p><strong>Status:</strong> <span style="color: ${statusColor}; font-weight: 600;">${escapeHtml(c.status)}</span> | <small style="color: #64748b;">${escapeHtml(c.date)}</small></p>
+                    <div style="margin-top: 12px; display: flex; gap: 10px; flex-wrap: wrap;">
+                        <button onclick="updateConcernStatus(${index}, 'In Progress')" style="background: #2563eb; color: white; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; font-size: 12px;">Set In Progress</button>
+                        <button onclick="updateConcernStatus(${index}, 'Resolved')" style="background: #16a34a; color: white; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; font-size: 12px;">Mark Resolved</button>
+                        <button onclick="deleteConcern(${index})" style="background: #dc2626; color: white; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; font-size: 12px; margin-left: auto;">Delete</button>
+                    </div>
+                `;
+                concernContainer.appendChild(div);
+            });
+        }
+
+        // 2. Load Freedom Wall Posts
+        let posts = JSON.parse(localStorage.getItem("wallPosts")) || [];
+        document.getElementById("statPosts").innerText = posts.length;
+        const wallContainer = document.getElementById("adminWallList");
+        
+        if (posts.length === 0) {
+            wallContainer.innerHTML = "<p style='color: #64748b;'>No freedom wall posts yet.</p>";
+        } else {
+            wallContainer.innerHTML = "";
+            posts.forEach((p, index) => {
+                const div = document.createElement("div");
+                div.style.cssText = "background: #030914; border: 1px solid #1e293b; padding: 15px; border-radius: 8px; margin-bottom: 15px;";
+                div.innerHTML = `
+                    <h3 style="color: #e2e8f0; margin-bottom: 5px; font-size: 15px;">${escapeHtml(p.name)}</h3>
+                    <p style="margin: 8px 0; color: #cbd5e1;">${escapeHtml(p.message)}</p>
+                    <small style="color: #64748b;">${escapeHtml(p.date)}</small>
+                    <div style="margin-top: 10px;">
+                        <button onclick="deletePost(${index})" style="background: #dc2626; color: white; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; font-size: 12px;">Remove Post</button>
+                    </div>
+                `;
+                wallContainer.appendChild(div);
+            });
+        }
+
+        // 3. Load Registered Users
+        let users = JSON.parse(localStorage.getItem("vmcRegisteredUsers")) || [];
+        document.getElementById("statUsers").innerText = users.length;
+        const userContainer = document.getElementById("adminUserList");
+        
+        if (users.length === 0) {
+            userContainer.innerHTML = "<p style='color: #64748b;'>No registered users yet.</p>";
+        } else {
+            userContainer.innerHTML = "";
+            users.forEach((u) => {
+                const div = document.createElement("div");
+                div.style.cssText = "background: #030914; border: 1px solid #1e293b; padding: 10px 15px; border-radius: 6px; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center;";
+                div.innerHTML = `
+                    <span style="color: #e2e8f0; font-size: 14px;"><strong>${escapeHtml(u.name)}</strong></span>
+                    <span style="color: #64748b; font-size: 13px;">${escapeHtml(u.email)}</span>
+                `;
+                userContainer.appendChild(div);
+            });
+        }
+    }
+
+    // Status Modifier
+    function updateConcernStatus(index, newStatus) {
+        let concerns = JSON.parse(localStorage.getItem("concerns")) || [];
+        if (concerns[index]) {
+            concerns[index].status = newStatus;
+            localStorage.setItem("concerns", JSON.stringify(concerns));
+            loadAdminData();
+        }
+    }
+
+    // Deletion Handlers
+    function deleteConcern(index) {
+        if (confirm("Are you sure you want to delete this concern?")) {
+            let concerns = JSON.parse(localStorage.getItem("concerns")) || [];
+            concerns.splice(index, 1);
+            localStorage.setItem("concerns", JSON.stringify(concerns));
+            loadAdminData();
+        }
+    }
+
+    function deletePost(index) {
+        if (confirm("Are you sure you want to remove this Freedom Wall post?")) {
+            let posts = JSON.parse(localStorage.getItem("wallPosts")) || [];
+            posts.splice(index, 1);
+            localStorage.setItem("wallPosts", JSON.stringify(posts));
+            loadAdminData();
+        }
+    }
+
+    function adminLogout() {
+        window.location.href = "index.html";
+    }
+
+    // HTML Sanitizer Helper
+    function escapeHtml(text) {
+        if (!text) return "";
+        return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, '&#039;');
+    }
+</script>
+
+</body>
+</html>
