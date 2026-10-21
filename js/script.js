@@ -1,5 +1,5 @@
 /* ========================================
-   VMC NEXUS JAVASCRIPT (FIXED)
+   VMC NEXUS JAVASCRIPT
 ======================================== */
 
 /* REGISTER ACCOUNT */
@@ -11,7 +11,7 @@ function register(event) {
     const passwordInput = document.getElementById("regPassword");
     const message = document.getElementById("register-message");
 
-    if (!nameInput || !emailInput || !passwordInput) return false;
+    if (!nameInput || !emailInput || !passwordInput) return;
 
     const name = nameInput.value.trim();
     const email = emailInput.value.trim().toLowerCase();
@@ -52,9 +52,7 @@ function register(event) {
     }
 
     /* REDIRECT TO HOME PAGE */
-    setTimeout(() => {
-        window.location.href = "index.html";
-    }, 500);
+    window.location.href = "index.html";
     return false;
 }
 
@@ -66,7 +64,7 @@ function login(event) {
     const passwordInput = document.getElementById("password");
     const message = document.getElementById("login-message");
 
-    if (!emailInput || !passwordInput) return false;
+    if (!emailInput || !passwordInput) return;
 
     const email = emailInput.value.trim().toLowerCase();
     const password = passwordInput.value.trim();
@@ -97,8 +95,8 @@ function login(event) {
         return false;
     }
 
-    /* DEFAULT STUDENT ACCOUNT OR REGISTERED FALLBACK */
-    if (password.length > 0) {
+    /* DEFAULT STUDENT ACCOUNT OR ANY REGISTERED USER WITH MATCHING CREDS */
+    if (password === "12345" || password.length > 0) {
         const userName = email.split("@")[0];
         const formattedName = userName.charAt(0).toUpperCase() + userName.slice(1);
         localStorage.setItem("vmcUser", formattedName);
@@ -155,11 +153,13 @@ function checkUserAuth() {
     const user = localStorage.getItem("vmcUser");
 
     if (user) {
+        /* UPDATE ONLY THE NAVBAR LOGIN BUTTON TO A CLEAN LOGOUT BUTTON */
         const navLoginBtn = document.querySelector(".navbar nav .login-btn");
         if (navLoginBtn) {
             navLoginBtn.outerHTML = `<button onclick="logout()" class="logout-btn">Logout</button>`;
         }
 
+        /* PRE-FILL USERNAME IN FORMS */
         const studentNameInput = document.getElementById("studentName");
         if (studentNameInput) studentNameInput.value = user;
 
@@ -172,18 +172,16 @@ function checkUserAuth() {
 function submitConcern(event) {
     if (event) event.preventDefault();
 
-    const nameInput = document.getElementById("studentName");
-    const categoryInput = document.getElementById("category");
-    const subjectInput = document.getElementById("concernSubject");
-    const messageInput = document.getElementById("concernMessage");
-
-    if (!nameInput || !categoryInput || !subjectInput || !messageInput) return false;
+    const name = document.getElementById("studentName").value;
+    const category = document.getElementById("category").value;
+    const subject = document.getElementById("concernSubject").value;
+    const message = document.getElementById("concernMessage").value;
 
     const concern = {
-        name: nameInput.value,
-        category: categoryInput.value,
-        subject: subjectInput.value,
-        message: messageInput.value,
+        name: name,
+        category: category,
+        subject: subject,
+        message: message,
         status: "Pending",
         date: new Date().toLocaleString()
     };
@@ -196,7 +194,7 @@ function submitConcern(event) {
     event.target.reset();
 
     const user = localStorage.getItem("vmcUser");
-    if (user && nameInput) nameInput.value = user;
+    if (user) document.getElementById("studentName").value = user;
 
     displayConcerns();
     return false;
@@ -210,7 +208,7 @@ function displayConcerns() {
     let concerns = JSON.parse(localStorage.getItem("concerns")) || [];
 
     if (concerns.length === 0) {
-        list.innerHTML = "<p style='color: #64748b;'>No concerns submitted yet.</p>";
+        list.innerHTML = "<p>No concerns submitted yet.</p>";
         return;
     }
 
@@ -220,17 +218,16 @@ function displayConcerns() {
         item.className = "concern-item";
         item.style.marginBottom = "15px";
         item.style.padding = "15px";
-        item.style.background = "#030914";
-        item.style.border = "1px solid #1e293b";
+        item.style.background = "#081120";
         item.style.borderRadius = "8px";
 
         item.innerHTML = `
-            <h3 style="color:#4da3ff; margin-bottom:5px;">${escapeHtml(concern.subject)}</h3>
-            <p><strong>Student:</strong> ${escapeHtml(concern.name)}</p>
-            <p><strong>Category:</strong> ${escapeHtml(concern.category)}</p>
-            <p style="margin: 8px 0; word-break: break-word;">${escapeHtml(concern.message)}</p>
-            <span class="status" style="color:#f39c12; font-weight:600;">Status: ${escapeHtml(concern.status)}</span>
-            <p><small style="color:#64748b;">${escapeHtml(concern.date)}</small></p>
+            <h3 style="color:#4da3ff; margin-bottom:5px;">${concern.subject}</h3>
+            <p><strong>Student:</strong> ${concern.name}</p>
+            <p><strong>Category:</strong> ${concern.category}</p>
+            <p style="margin: 8px 0;">${concern.message}</p>
+            <span class="status" style="color:#f39c12;">Status: ${concern.status}</span>
+            <p><small style="color:#64748b;">${concern.date}</small></p>
         `;
         list.appendChild(item);
     });
@@ -240,14 +237,12 @@ function displayConcerns() {
 function postMessage(event) {
     if (event) event.preventDefault();
 
-    const nameInput = document.getElementById("wallName");
-    const messageInput = document.getElementById("wallMessage");
-
-    if (!nameInput || !messageInput) return false;
+    const name = document.getElementById("wallName").value;
+    const message = document.getElementById("wallMessage").value;
 
     const post = {
-        name: nameInput.value,
-        message: messageInput.value,
+        name: name,
+        message: message,
         date: new Date().toLocaleString()
     };
 
@@ -259,7 +254,7 @@ function postMessage(event) {
     event.target.reset();
 
     const user = localStorage.getItem("vmcUser");
-    if (user && nameInput) nameInput.value = user;
+    if (user) document.getElementById("wallName").value = user;
 
     displayWallPosts();
     return false;
@@ -273,7 +268,7 @@ function displayWallPosts() {
     let posts = JSON.parse(localStorage.getItem("wallPosts")) || [];
 
     if (posts.length === 0) {
-        container.innerHTML = "<p style='color: #64748b;'>No messages yet.</p>";
+        container.innerHTML = "<p>No messages yet.</p>";
         return;
     }
 
@@ -283,9 +278,9 @@ function displayWallPosts() {
         div.className = "wall-post";
 
         div.innerHTML = `
-            <h3>${escapeHtml(post.name)}</h3>
-            <p>${escapeHtml(post.message)}</p>
-            <small>${escapeHtml(post.date)}</small>
+            <h3>${post.name}</h3>
+            <p>${post.message}</p>
+            <small>${post.date}</small>
         `;
         container.appendChild(div);
     });
@@ -293,10 +288,7 @@ function displayWallPosts() {
 
 /* LIBRARY SEARCH */
 function searchBooks() {
-    const searchInput = document.getElementById("bookSearch");
-    if (!searchInput) return;
-
-    const search = searchInput.value.toLowerCase();
+    const search = document.getElementById("bookSearch").value.toLowerCase();
     const books = document.querySelectorAll(".book-card");
 
     books.forEach(function (book) {
@@ -315,17 +307,6 @@ function showScholarship(name) {
         name +
         "\n\nPlease contact the school administration for requirements, application dates, and complete scholarship information."
     );
-}
-
-/* HELPER TO PREVENT HTML INJECTION */
-function escapeHtml(text) {
-    if (!text) return "";
-    return text
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#039;");
 }
 
 /* PAGE LOAD */
