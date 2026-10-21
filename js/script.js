@@ -1,119 +1,8 @@
 /* ========================================
-   VMC NEXUS JAVASCRIPT SYSTEM
+   VMC NEXUS JAVASCRIPT (FULL FIXED)
 ======================================== */
 
-/* DEFAULT SAMPLE BOOKS DATA */
-const defaultBooks = [
-    {
-        id: 1,
-        title: "Introduction to Information Systems",
-        category: "Information Technology",
-        location: "Shelf A1",
-        author: "James A. O'Brien",
-        isbn: "978-0073376776",
-        year: "2021",
-        status: "Available (4 copies left)",
-        description: "Provides an overview of information systems, foundational technologies, e-business applications, and strategic implementation within modern organizations."
-    },
-    {
-        id: 2,
-        title: "Web Development Basics",
-        category: "Programming",
-        location: "Shelf A2",
-        author: "Jon Duckett",
-        isbn: "978-1118871645",
-        year: "2022",
-        status: "Available (2 copies left)",
-        description: "An introductory guide covering standard web technology principles including structured layout design, responsive styling, and client-side interactions."
-    },
-    {
-        id: 3,
-        title: "Database Management",
-        category: "Information Systems",
-        location: "Shelf B1",
-        author: "Carlos Coronel & Steven Morris",
-        isbn: "978-1337558822",
-        year: "2020",
-        status: "Available (5 copies left)",
-        description: "Covers database design, implementation, and management concepts including relational models, normalization, SQL querying, and database administration."
-    },
-    {
-        id: 4,
-        title: "Computer Programming",
-        category: "Programming",
-        location: "Shelf B2",
-        author: "Tony Gaddis",
-        isbn: "978-0134801131",
-        year: "2023",
-        status: "Available (3 copies left)",
-        description: "A comprehensive guide to fundamental logic, control structures, array manipulation, object-oriented concepts, and algorithm development."
-    }
-];
-
-/* RENDER LIBRARY BOOKS ON PAGE */
-function displayBooks() {
-    const container = document.getElementById("bookList");
-    if (!container) return;
-
-    container.innerHTML = "";
-    defaultBooks.forEach((book, index) => {
-        const card = document.createElement("div");
-        card.className = "book-card";
-        card.style.cursor = "pointer";
-        card.onclick = function () { openBookModal(index); };
-
-        card.innerHTML = `
-            <h3>${escapeHtml(book.title)}</h3>
-            <p>Category: ${escapeHtml(book.category)}</p>
-            <strong style="color: #38bdf8; display: block; margin-top: 10px;">Location: ${escapeHtml(book.location)}</strong>
-            <span style="color: #4da3ff; font-size: 12px; display: inline-block; margin-top: 10px;">Click for book details →</span>
-        `;
-        container.appendChild(card);
-    });
-}
-
-/* SEARCH BOOKS FUNCTION */
-function searchBooks() {
-    const searchInput = document.getElementById("bookSearch");
-    if (!searchInput) return;
-    
-    const query = searchInput.value.toLowerCase();
-    const books = document.querySelectorAll(".book-card");
-
-    books.forEach(function (bookCard) {
-        const text = bookCard.innerText.toLowerCase();
-        if (text.includes(query)) {
-            bookCard.style.display = "flex";
-        } else {
-            bookCard.style.display = "none";
-        }
-    });
-}
-
-/* BOOK MODAL HANDLERS */
-function openBookModal(index) {
-    const book = defaultBooks[index];
-    if (!book) return;
-
-    document.getElementById("modalBookTitle").innerText = book.title;
-    document.getElementById("modalBookCategory").innerText = book.category;
-    document.getElementById("modalBookLocation").innerText = book.location;
-    document.getElementById("modalBookAuthor").innerText = book.author;
-    document.getElementById("modalBookIsbn").innerText = book.isbn;
-    document.getElementById("modalBookYear").innerText = book.year;
-    document.getElementById("modalBookStatus").innerText = book.status;
-    document.getElementById("modalBookDescription").innerText = book.description;
-
-    const modal = document.getElementById("bookModal");
-    if (modal) modal.style.display = "flex";
-}
-
-function closeBookModal() {
-    const modal = document.getElementById("bookModal");
-    if (modal) modal.style.display = "none";
-}
-
-/* DEFAULT SAMPLE ANNOUNCEMENTS */
+// Default sample announcements if none exist in localStorage
 const defaultAnnouncements = [
     {
         title: "Enrollment Updates",
@@ -132,7 +21,7 @@ const defaultAnnouncements = [
     }
 ];
 
-/* INITIALIZE ANNOUNCEMENTS DATA */
+// Initialize default announcements on first load
 function initAnnouncements() {
     let stored = localStorage.getItem("vmcAnnouncements");
     if (!stored) {
@@ -156,22 +45,19 @@ function displayAnnouncements() {
     list.forEach((item, index) => {
         const card = document.createElement("div");
         card.className = "announcement-card";
-        card.style.cursor = "pointer";
         card.onclick = function () { openAnnouncementModal(index); };
-
-        const previewText = item.content.length > 120 ? item.content.substring(0, 120) + "..." : item.content;
 
         card.innerHTML = `
             <small>${escapeHtml(item.date)}</small>
             <h2>${escapeHtml(item.title)}</h2>
-            <p>${escapeHtml(previewText)}</p>
-            <span style="color: #4da3ff; font-size: 12px; display: inline-block; margin-top: 10px;">Click to view details →</span>
+            <p>${escapeHtml(item.content.length > 120 ? item.content.substring(0, 120) + "..." : item.content)}</p>
+            <span style="color: #4da3ff; font-size: 13px; font-weight: 600; display: inline-block; margin-top: 10px;">Click to view details →</span>
         `;
         container.appendChild(card);
     });
 }
 
-/* ANNOUNCEMENT MODAL HANDLERS */
+/* MODAL HANDLERS FOR PUBLIC PAGE */
 function openAnnouncementModal(index) {
     let list = JSON.parse(localStorage.getItem("vmcAnnouncements")) || [];
     const item = list[index];
@@ -190,76 +76,199 @@ function closeAnnouncementModal() {
     if (modal) modal.style.display = "none";
 }
 
-/* REGISTER ACCOUNT */
-function register(event) {
+/* ADMIN: CREATE NEW ANNOUNCEMENT */
+function createAnnouncement(event) {
     if (event) event.preventDefault();
 
-    const nameInput = document.getElementById("regName");
-    const emailInput = document.getElementById("regEmail");
-    const passwordInput = document.getElementById("regPassword");
+    const title = document.getElementById("adminAnnTitle").value.trim();
+    const date = document.getElementById("adminAnnDate").value.trim();
+    const content = document.getElementById("adminAnnContent").value.trim();
+
+    if (!title || !date || !content) return false;
+
+    let list = JSON.parse(localStorage.getItem("vmcAnnouncements")) || [];
+    list.unshift({ title: title, date: date, content: content });
+    localStorage.setItem("vmcAnnouncements", JSON.stringify(list));
+
+    alert("Announcement published successfully!");
+    event.target.reset();
+    loadAdminData();
+    return false;
+}
+
+/* ADMIN: DELETE ANNOUNCEMENT */
+function deleteAnnouncement(index) {
+    if (confirm("Are you sure you want to delete this announcement?")) {
+        let list = JSON.parse(localStorage.getItem("vmcAnnouncements")) || [];
+        list.splice(index, 1);
+        localStorage.setItem("vmcAnnouncements", JSON.stringify(list));
+        loadAdminData();
+    }
+}
+
+/* ADMIN: LOAD ALL MONITORING DATA */
+function loadAdminData() {
+    // 1. Announcements
+    const annContainer = document.getElementById("adminAnnouncementList");
+    if (annContainer) {
+        let list = JSON.parse(localStorage.getItem("vmcAnnouncements")) || [];
+        if (list.length === 0) {
+            annContainer.innerHTML = "<p style='color: #64748b;'>No announcements available.</p>";
+        } else {
+            annContainer.innerHTML = "";
+            list.forEach((a, index) => {
+                const div = document.createElement("div");
+                div.style.cssText = "background: #030914; border: 1px solid #1e293b; padding: 15px; border-radius: 8px; margin-bottom: 12px;";
+                div.innerHTML = `
+                    <small style="color: #64748b;">${escapeHtml(a.date)}</small>
+                    <h3 style="color: #4da3ff; margin: 4px 0 8px 0; font-size: 16px;">${escapeHtml(a.title)}</h3>
+                    <p style="color: #cbd5e1; font-size: 14px;">${escapeHtml(a.content)}</p>
+                    <button onclick="deleteAnnouncement(${index})" style="background: #dc2626; color: white; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; font-size: 12px; margin-top: 10px;">Delete Announcement</button>
+                `;
+                annContainer.appendChild(div);
+            });
+        }
+    }
+
+    // 2. Concerns
+    const concernContainer = document.getElementById("adminConcernList");
+    if (concernContainer) {
+        let concerns = JSON.parse(localStorage.getItem("concerns")) || [];
+        if (concerns.length === 0) {
+            concernContainer.innerHTML = "<p style='color: #64748b;'>No concerns submitted yet.</p>";
+        } else {
+            concernContainer.innerHTML = "";
+            concerns.forEach((c, index) => {
+                const div = document.createElement("div");
+                div.style.cssText = "background: #030914; border: 1px solid #1e293b; padding: 15px; border-radius: 8px; margin-bottom: 12px;";
+                let statusColor = c.status === "Resolved" ? "#16a34a" : c.status === "In Progress" ? "#2563eb" : "#f39c12";
+
+                div.innerHTML = `
+                    <h3 style="color: #4da3ff; margin-bottom: 5px; font-size: 16px;">${escapeHtml(c.subject)}</h3>
+                    <p><strong>Student:</strong> ${escapeHtml(c.name)} | <strong>Category:</strong> ${escapeHtml(c.category)}</p>
+                    <p style="margin: 8px 0; color: #cbd5e1;">${escapeHtml(c.message)}</p>
+                    <p><strong>Status:</strong> <span style="color: ${statusColor}; font-weight: 600;">${escapeHtml(c.status)}</span> | <small style="color: #64748b;">${escapeHtml(c.date)}</small></p>
+                    <div style="margin-top: 10px; display: flex; gap: 8px;">
+                        <button onclick="updateConcernStatus(${index}, 'In Progress')" style="background: #2563eb; color: white; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; font-size: 12px;">In Progress</button>
+                        <button onclick="updateConcernStatus(${index}, 'Resolved')" style="background: #16a34a; color: white; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; font-size: 12px;">Resolved</button>
+                        <button onclick="deleteConcern(${index})" style="background: #dc2626; color: white; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; font-size: 12px; margin-left: auto;">Delete</button>
+                    </div>
+                `;
+                concernContainer.appendChild(div);
+            });
+        }
+    }
+
+    // 3. Freedom Wall Posts
+    const wallContainer = document.getElementById("adminWallList");
+    if (wallContainer) {
+        let posts = JSON.parse(localStorage.getItem("wallPosts")) || [];
+        if (posts.length === 0) {
+            wallContainer.innerHTML = "<p style='color: #64748b;'>No freedom wall posts yet.</p>";
+        } else {
+            wallContainer.innerHTML = "";
+            posts.forEach((p, index) => {
+                const div = document.createElement("div");
+                div.style.cssText = "background: #030914; border: 1px solid #1e293b; padding: 15px; border-radius: 8px; margin-bottom: 12px;";
+                div.innerHTML = `
+                    <h3 style="color: #e2e8f0; font-size: 15px;">${escapeHtml(p.name)}</h3>
+                    <p style="margin: 6px 0; color: #cbd5e1;">${escapeHtml(p.message)}</p>
+                    <small style="color: #64748b;">${escapeHtml(p.date)}</small>
+                    <button onclick="deletePost(${index})" style="background: #dc2626; color: white; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; font-size: 12px; display: block; margin-top: 8px;">Remove Post</button>
+                `;
+                wallContainer.appendChild(div);
+            });
+        }
+    }
+
+    // 4. Registered Users
+    const userContainer = document.getElementById("adminUserList");
+    if (userContainer) {
+        let users = JSON.parse(localStorage.getItem("vmcRegisteredUsers")) || [];
+        if (users.length === 0) {
+            userContainer.innerHTML = "<p style='color: #64748b;'>No registered users yet.</p>";
+        } else {
+            userContainer.innerHTML = "";
+            users.forEach((u) => {
+                const div = document.createElement("div");
+                div.style.cssText = "background: #030914; border: 1px solid #1e293b; padding: 10px 15px; border-radius: 6px; margin-bottom: 8px; display: flex; justify-content: space-between;";
+                div.innerHTML = `
+                    <span style="color: #e2e8f0; font-size: 14px;"><strong>${escapeHtml(u.name)}</strong></span>
+                    <span style="color: #64748b; font-size: 13px;">${escapeHtml(u.email)}</span>
+                `;
+                userContainer.appendChild(div);
+            });
+        }
+    }
+}
+
+/* HELPER FUNCTIONS */
+function updateConcernStatus(index, newStatus) {
+    let concerns = JSON.parse(localStorage.getItem("concerns")) || [];
+    if (concerns[index]) {
+        concerns[index].status = newStatus;
+        localStorage.setItem("concerns", JSON.stringify(concerns));
+        loadAdminData();
+    }
+}
+
+function deleteConcern(index) {
+    if (confirm("Delete this concern?")) {
+        let concerns = JSON.parse(localStorage.getItem("concerns")) || [];
+        concerns.splice(index, 1);
+        localStorage.setItem("concerns", JSON.stringify(concerns));
+        loadAdminData();
+    }
+}
+
+function deletePost(index) {
+    if (confirm("Remove this post?")) {
+        let posts = JSON.parse(localStorage.getItem("wallPosts")) || [];
+        posts.splice(index, 1);
+        localStorage.setItem("wallPosts", JSON.stringify(posts));
+        loadAdminData();
+    }
+}
+
+function adminLogout() {
+    window.location.href = "index.html";
+}
+
+function escapeHtml(text) {
+    if (!text) return "";
+    return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
+}
+
+/* AUTH & SUBPAGE SUBMISSIONS */
+function register(event) {
+    if (event) event.preventDefault();
+    const name = document.getElementById("regName").value.trim();
+    const email = document.getElementById("regEmail").value.trim().toLowerCase();
+    const password = document.getElementById("regPassword").value.trim();
     const message = document.getElementById("register-message");
 
-    if (!nameInput || !emailInput || !passwordInput) return false;
-
-    const name = nameInput.value.trim();
-    const email = emailInput.value.trim().toLowerCase();
-    const password = passwordInput.value.trim();
-
     if (!email.includes("@vmc.com")) {
-        if (message) {
-            message.style.color = "#ef4444";
-            message.innerText = "Email must end with @vmc.com (e.g., bhet@vmc.com)";
-        }
+        if (message) { message.style.color = "#f44336"; message.innerHTML = "Email must end with @vmc.com"; }
         return false;
     }
 
     let users = JSON.parse(localStorage.getItem("vmcRegisteredUsers")) || [];
-    const userExists = users.some(u => u.email === email);
-    if (userExists) {
-        if (message) {
-            message.style.color = "#ef4444";
-            message.innerText = "An account with this email already exists!";
-        }
+    if (users.some(u => u.email === email)) {
+        if (message) { message.style.color = "#f44336"; message.innerHTML = "Account already exists!"; }
         return false;
     }
 
-    const newUser = { name: name, email: email, password: password };
-    users.push(newUser);
+    users.push({ name, email, password });
     localStorage.setItem("vmcRegisteredUsers", JSON.stringify(users));
-
     localStorage.setItem("vmcUser", name);
-
-    if (message) {
-        message.style.color = "#10b981";
-        message.innerText = "Registration successful! Redirecting...";
-    }
-
-    setTimeout(() => {
-        window.location.href = "index.html";
-    }, 1000);
+    window.location.href = "index.html";
     return false;
 }
 
-/* LOGIN */
 function login(event) {
     if (event) event.preventDefault();
-
-    const emailInput = document.getElementById("email");
-    const passwordInput = document.getElementById("password");
-    const message = document.getElementById("login-message");
-
-    if (!emailInput || !passwordInput) return false;
-
-    const email = emailInput.value.trim().toLowerCase();
-    const password = passwordInput.value.trim();
-
-    if (!email.includes("@vmc.com")) {
-        if (message) {
-            message.style.color = "#ef4444";
-            message.innerText = "Email must contain @vmc.com (e.g., bhet@vmc.com)";
-        }
-        return false;
-    }
+    const email = document.getElementById("email").value.trim().toLowerCase();
+    const password = document.getElementById("password").value.trim();
 
     if (email === "admin@vmc.com" && password === "admin123") {
         localStorage.setItem("vmcUser", "Administrator");
@@ -276,102 +285,45 @@ function login(event) {
         return false;
     }
 
-    if (password.length > 0) {
-        const userName = email.split("@")[0];
-        const formattedName = userName.charAt(0).toUpperCase() + userName.slice(1);
-        localStorage.setItem("vmcUser", formattedName);
-        window.location.href = "index.html";
-        return false;
-    }
-
-    if (message) {
-        message.style.color = "#ef4444";
-        message.innerText = "Invalid email or password.";
-    }
+    localStorage.setItem("vmcUser", email.split("@")[0]);
+    window.location.href = "index.html";
     return false;
 }
 
-/* SHOW / HIDE PASSWORDS */
-function showPassword() {
-    const password = document.getElementById("password");
-    const button = document.getElementById("showButton");
-    if (!password || !button) return;
-
-    if (password.type === "password") {
-        password.type = "text";
-        button.innerText = "HIDE";
-    } else {
-        password.type = "password";
-        button.innerText = "SHOW";
-    }
-}
-
-function showRegPassword() {
-    const password = document.getElementById("regPassword");
-    const button = document.getElementById("regShowButton");
-    if (!password || !button) return;
-
-    if (password.type === "password") {
-        password.type = "text";
-        button.innerText = "HIDE";
-    } else {
-        password.type = "password";
-        button.innerText = "SHOW";
-    }
-}
-
-/* LOGOUT */
-function logout() {
-    localStorage.removeItem("vmcUser");
-    window.location.href = "index.html";
-}
-
-/* AUTHENTICATION & NAVBAR CHECK */
 function checkUserAuth() {
     const user = localStorage.getItem("vmcUser");
-
     if (user) {
         const navLoginBtn = document.querySelector(".navbar nav .login-btn");
         if (navLoginBtn) {
             navLoginBtn.outerHTML = `<button onclick="logout()" class="logout-btn">Logout</button>`;
         }
-
-        const studentNameInput = document.getElementById("studentName");
-        if (studentNameInput) studentNameInput.value = user;
-
-        const wallNameInput = document.getElementById("wallName");
-        if (wallNameInput) wallNameInput.value = user;
+        const studentName = document.getElementById("studentName");
+        if (studentName) studentName.value = user;
+        const wallName = document.getElementById("wallName");
+        if (wallName) wallName.value = user;
     }
 }
 
-/* CONCERNS FORM */
+function logout() {
+    localStorage.removeItem("vmcUser");
+    window.location.href = "index.html";
+}
+
 function submitConcern(event) {
     if (event) event.preventDefault();
-
-    const name = document.getElementById("studentName").value;
-    const category = document.getElementById("category").value;
-    const subject = document.getElementById("concernSubject").value;
-    const message = document.getElementById("concernMessage").value;
-
     const concern = {
-        name: name,
-        category: category,
-        subject: subject,
-        message: message,
+        name: document.getElementById("studentName").value,
+        category: document.getElementById("category").value,
+        subject: document.getElementById("concernSubject").value,
+        message: document.getElementById("concernMessage").value,
         status: "Pending",
         date: new Date().toLocaleString()
     };
-
     let concerns = JSON.parse(localStorage.getItem("concerns")) || [];
     concerns.push(concern);
     localStorage.setItem("concerns", JSON.stringify(concerns));
-
-    alert("Your concern has been submitted successfully!");
+    alert("Concern submitted!");
     event.target.reset();
-
-    const user = localStorage.getItem("vmcUser");
-    if (user) document.getElementById("studentName").value = user;
-
     displayConcerns();
     return false;
 }
@@ -379,54 +331,29 @@ function submitConcern(event) {
 function displayConcerns() {
     const list = document.getElementById("concernList");
     if (!list) return;
-
     let concerns = JSON.parse(localStorage.getItem("concerns")) || [];
-
-    if (concerns.length === 0) {
-        list.innerHTML = "<p style='color: #64748b;'>No concerns submitted yet.</p>";
-        return;
-    }
-
+    if (concerns.length === 0) { list.innerHTML = "<p>No concerns submitted yet.</p>"; return; }
     list.innerHTML = "";
-    concerns.forEach(function (concern) {
-        const item = document.createElement("div");
-        item.className = "wall-post";
-        item.style.marginBottom = "15px";
-
-        item.innerHTML = `
-            <h3 style="color:#4da3ff; margin-bottom:5px;">${escapeHtml(concern.subject)}</h3>
-            <p><strong>Student:</strong> ${escapeHtml(concern.name)} | <strong>Category:</strong> ${escapeHtml(concern.category)}</p>
-            <p style="margin: 8px 0;">${escapeHtml(concern.message)}</p>
-            <span style="color:#f39c12; font-weight:600;">Status: ${escapeHtml(concern.status)}</span>
-            <small style="color:#64748b;">${escapeHtml(concern.date)}</small>
-        `;
-        list.appendChild(item);
+    concerns.forEach(c => {
+        const div = document.createElement("div");
+        div.style.cssText = "background:#030914; border:1px solid #1e293b; padding:15px; border-radius:8px; margin-bottom:12px;";
+        div.innerHTML = `<h3 style="color:#4da3ff">${escapeHtml(c.subject)}</h3><p>Category: ${escapeHtml(c.category)}</p><p>${escapeHtml(c.message)}</p><small style="color:#64748b">${escapeHtml(c.date)}</small>`;
+        list.appendChild(div);
     });
 }
 
-/* FREEDOM WALL FORM */
 function postMessage(event) {
     if (event) event.preventDefault();
-
-    const name = document.getElementById("wallName").value;
-    const message = document.getElementById("wallMessage").value;
-
     const post = {
-        name: name,
-        message: message,
+        name: document.getElementById("wallName").value,
+        message: document.getElementById("wallMessage").value,
         date: new Date().toLocaleString()
     };
-
     let posts = JSON.parse(localStorage.getItem("wallPosts")) || [];
     posts.unshift(post);
     localStorage.setItem("wallPosts", JSON.stringify(posts));
-
-    alert("Your message has been posted!");
+    alert("Message posted!");
     event.target.reset();
-
-    const user = localStorage.getItem("vmcUser");
-    if (user) document.getElementById("wallName").value = user;
-
     displayWallPosts();
     return false;
 }
@@ -434,49 +361,23 @@ function postMessage(event) {
 function displayWallPosts() {
     const container = document.getElementById("wallPosts");
     if (!container) return;
-
     let posts = JSON.parse(localStorage.getItem("wallPosts")) || [];
-
-    if (posts.length === 0) {
-        container.innerHTML = "<p style='color: #64748b;'>No messages yet.</p>";
-        return;
-    }
-
+    if (posts.length === 0) { container.innerHTML = "<p>No messages yet.</p>"; return; }
     container.innerHTML = "";
-    posts.forEach(function (post) {
+    posts.forEach(p => {
         const div = document.createElement("div");
         div.className = "wall-post";
-
-        div.innerHTML = `
-            <h3>${escapeHtml(post.name)}</h3>
-            <p>${escapeHtml(post.message)}</p>
-            <small>${escapeHtml(post.date)}</small>
-        `;
+        div.innerHTML = `<h3>${escapeHtml(p.name)}</h3><p>${escapeHtml(p.message)}</p><small>${escapeHtml(p.date)}</small>`;
         container.appendChild(div);
     });
 }
 
-/* SCHOLARSHIP ALERT */
-function showScholarship(name) {
-    alert(
-        name +
-        "\n\nPlease contact the school administration for requirements, application dates, and complete scholarship information."
-    );
-}
-
-/* HTML SANITIZER HELPER */
-function escapeHtml(text) {
-    if (!text) return "";
-    return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, '&#039;');
-}
-
-/* GLOBAL DOM INITIALIZATION */
+/* INIT ON LOAD */
 document.addEventListener("DOMContentLoaded", function () {
-    checkUserAuth();
     initAnnouncements();
+    checkUserAuth();
     displayAnnouncements();
-    displayBooks();
     displayConcerns();
     displayWallPosts();
-    console.log("VMC Nexus System Loaded Successfully.");
+    loadAdminData();
 });
