@@ -26,39 +26,39 @@
 <main class="page-container">
     <div class="page-header">
         <h1>📚 VMC Library</h1>
-        <p>Search for available books and library resources. Click any book to view shelf details and information.</p>
+        <p>Search for available books and library resources.</p>
     </div>
 
     <div class="search-box">
-        <input type="text" id="bookSearch" placeholder="Search book title or category..." onkeyup="searchBooks()">
+        <input type="text" id="bookSearch" placeholder="Search book title..." onkeyup="searchBooks()">
     </div>
 
-    <!-- Book Grid Container (Populated dynamically via script.js) -->
-    <div class="book-grid" id="bookList"></div>
+    <div class="book-grid" id="bookList">
+        <div class="book-card">
+            <h3>Introduction to Information Systems</h3>
+            <p>Category: Information Technology</p>
+            <strong>Location: Shelf A1</strong>
+        </div>
+
+        <div class="book-card">
+            <h3>Web Development Basics</h3>
+            <p>Category: Programming</p>
+            <strong>Location: Shelf A2</strong>
+        </div>
+
+        <div class="book-card">
+            <h3>Database Management</h3>
+            <p>Category: Information Systems</p>
+            <strong>Location: Shelf B1</strong>
+        </div>
+
+        <div class="book-card">
+            <h3>Computer Programming</h3>
+            <p>Category: Programming</p>
+            <strong>Location: Shelf B2</strong>
+        </div>
+    </div>
 </main>
-
-<!-- Book Details Modal -->
-<div id="bookModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(3, 9, 20, 0.85); z-index: 2000; justify-content: center; align-items: center; padding: 20px;">
-    <div style="background: #081120; border: 1px solid rgba(77, 163, 255, 0.3); border-radius: 12px; padding: 30px; max-width: 550px; width: 100%; box-shadow: 0 15px 35px rgba(0,0,0,0.5);">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
-            <span id="modalBookCategory" style="color: #4da3ff; font-size: 13px; font-weight: bold; text-transform: uppercase; letter-spacing: 1px;"></span>
-            <span id="modalBookLocation" style="background: #1e293b; color: #38bdf8; padding: 4px 10px; border-radius: 4px; font-size: 12px; font-weight: 600;"></span>
-        </div>
-        
-        <h2 id="modalBookTitle" style="color: #ffffff; margin-bottom: 15px; font-size: 22px;"></h2>
-        
-        <div style="background: #030914; border: 1px solid #1e293b; border-radius: 8px; padding: 15px; margin-bottom: 20px;">
-            <p style="margin-bottom: 8px; font-size: 14px;"><strong style="color: #94a3b8;">Author:</strong> <span id="modalBookAuthor" style="color: #e2e8f0;"></span></p>
-            <p style="margin-bottom: 8px; font-size: 14px;"><strong style="color: #94a3b8;">ISBN:</strong> <span id="modalBookIsbn" style="color: #e2e8f0;"></span></p>
-            <p style="margin-bottom: 8px; font-size: 14px;"><strong style="color: #94a3b8;">Publication Year:</strong> <span id="modalBookYear" style="color: #e2e8f0;"></span></p>
-            <p style="margin-bottom: 0; font-size: 14px;"><strong style="color: #94a3b8;">Status:</strong> <span id="modalBookStatus" style="color: #10b981; font-weight: bold;"></span></p>
-        </div>
-
-        <p id="modalBookDescription" style="color: #cbd5e1; font-size: 14px; line-height: 1.6; margin-bottom: 25px;"></p>
-        
-        <button onclick="closeBookModal()" style="background: #2563eb; color: white; border: none; padding: 10px 20px; border-radius: 6px; font-weight: 600; cursor: pointer; width: 100%;">Close Details</button>
-    </div>
-</div>
 
 <footer>
     <p>© 2026 VMC Nexus | Student Services System</p>
